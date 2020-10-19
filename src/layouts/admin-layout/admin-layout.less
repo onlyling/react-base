@@ -1,0 +1,40 @@
+@import '~antd/es/style/themes/default.less';
+
+.layouts-admin-layout {
+  height: 100%;
+
+  &_sider-light {
+    background-color: #fff;
+  }
+
+  &sider-dark {
+    background-color: @menu-dark-bg;
+  }
+
+  &_sider {
+    overflow: hidden;
+
+    .@{ant-prefix}-layout-sider-children {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &_sider-menu {
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  &_header-light {
+    background-color: #fff;
+  }
+
+  &_header-dark {
+    background-color: @menu-dark-bg;
+  }
+
+  &_logo {
+    max-width: 100%;
+    height: auto;
+  }
+}
