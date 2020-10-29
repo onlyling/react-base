@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { useModel } from '@/models';
 
+import { Provider, CCCC } from './ctx/ctx';
+
 import Styles from './home.module.less';
 
 const Home: React.FC = () => {
@@ -37,6 +39,14 @@ const Home: React.FC = () => {
       <p>
         <Link to="/user-manage/list">GO USER MANAGE</Link>
       </p>
+
+      <p>
+        <Link to="/pro-table/demo">GO PRO TABLE DEMO</Link>
+      </p>
+
+      <Provider>
+        <CCCC />
+      </Provider>
     </div>
   );
 };

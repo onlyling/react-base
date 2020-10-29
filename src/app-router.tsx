@@ -46,6 +46,24 @@ const AppRouter: React.FC = () => {
               />
 
               <Route
+                exact
+                path="/pro-table/demo"
+                component={loadableWrapper(() => import('@/pages/pro-table/demo'))}
+              />
+
+              <Route
+                exact
+                path="/pro-table/table"
+                component={loadableWrapper(() => import('@/pages/pro-table/table'))}
+              />
+
+              <Route
+                exact
+                path="/pro-table/table-2"
+                component={loadableWrapper(() => import('@/pages/pro-table/table-2'))}
+              />
+
+              <Route
                 path="/user-manage"
                 component={() => {
                   return (
