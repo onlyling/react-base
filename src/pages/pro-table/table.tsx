@@ -90,6 +90,8 @@ const ProTableDemo: React.FC = () => {
         </Button>
       </p>
 
+      <p>{JSON.stringify(columns)}</p>
+
       <Table
         rowKey="id"
         columns={columns}

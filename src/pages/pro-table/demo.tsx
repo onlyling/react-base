@@ -19,6 +19,7 @@ const ProTableDemo: React.FC = () => {
     {
       dataIndex: 'title',
       title: 'title',
+      search: false,
     },
     {
       dataIndex: 'type',
@@ -28,6 +29,7 @@ const ProTableDemo: React.FC = () => {
         { text: '1', value: '1' },
         { text: '2', value: '2' },
       ],
+      search: false,
     },
   ]);
   const [list, setList] = useState<DemoData[]>([]);
@@ -86,6 +88,8 @@ const ProTableDemo: React.FC = () => {
           random data
         </Button>
       </p>
+
+      <p>{JSON.stringify(columns)}</p>
 
       <ProTable
         rowKey="id"
