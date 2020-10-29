@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Table } from 'antd';
 import { ColumnProps, TablePaginationConfig } from 'antd/es/table';
 import { Link } from 'react-router-dom';
+import omit from 'omit.js';
 
 type DemoDataType = 1 | 2 | 3 | 4;
 
@@ -66,12 +67,8 @@ const ProTableDemo: React.FC = () => {
         <Button
           type="primary"
           onClick={() => {
-            // setColumns((cs) =>
-            //   cs.map((cc) => ({
-            //     ...cc,
-            //     filteredValue: [],
-            //   })),
-            // );
+            // omit 去掉 filteredValue，模拟 ProTable 对 columns 里面的空数组过滤
+            setColumns((cs) => cs.map((cc) => omit(cc, ['filteredValue'])));
             fetchData();
           }}
         >
@@ -91,12 +88,12 @@ const ProTableDemo: React.FC = () => {
         loading={loading}
         dataSource={list}
         onChange={(_: TablePaginationConfig, filters: Record<string, React.Key[] | null>) => {
-          // setColumns((cs) =>
-          //   cs.map((cc) => {
-          //     cc.filteredValue = filters[cc.dataIndex as string] || [];
-          //     return cc;
-          //   }),
-          // );
+          setColumns((cs) =>
+            cs.map((cc) => {
+              cc.filteredValue = filters[cc.dataIndex as string] || [];
+              return cc;
+            }),
+          );
           fetchData();
         }}
       />
