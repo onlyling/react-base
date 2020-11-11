@@ -18,6 +18,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
   logo,
   smallLogo,
 }) => {
+  console.log('-- admin-layout --');
   /** 深色 */
   const isDark = theme === 'dark';
 

@@ -47,6 +47,12 @@ const AppRouter: React.FC = () => {
 
               <Route
                 exact
+                path="/demos/props"
+                component={loadableWrapper(() => import('@/pages/demo/props/props'))}
+              />
+
+              <Route
+                exact
                 path="/pro-table/demo"
                 component={loadableWrapper(() => import('@/pages/pro-table/demo'))}
               />
