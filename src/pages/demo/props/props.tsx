@@ -1,13 +1,15 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import CC from './cc';
 import DD from './dd';
+import Imperative, { ImperativeRef } from './imperative';
 
 const Props: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [p, setP] = useState('1');
   const [ccVisible, setCCVisible] = useState(false);
   const [ddVisible, setDDVisible] = useState(false);
+  const IRef = useRef<ImperativeRef>(null);
 
   console.log('-- Props --');
 
@@ -44,6 +46,16 @@ const Props: React.FC = () => {
 
   return (
     <div>
+      <p>
+        <span
+          onClick={() => {
+            IRef.current?.show();
+          }}
+        >
+          show IRef
+        </span>
+      </p>
+
       <p>ppppp - {p}</p>
 
       <p>
@@ -53,6 +65,8 @@ const Props: React.FC = () => {
       <CC visible={ccVisible} onClick={onClick} onClose={onClose} text={p} />
 
       <DD visible={ddVisible} onClose={onClose2} text={p} />
+
+      <Imperative ref={IRef} />
     </div>
   );
 };

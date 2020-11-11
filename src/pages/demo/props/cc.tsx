@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { Modal } from 'antd';
 
 import DDDDDD from './dd';
@@ -54,4 +54,4 @@ const CC: React.FC<CCProps> = ({ visible, onClick, onClose, text }) => {
   );
 };
 
-export default CC;
+export default memo(CC);
