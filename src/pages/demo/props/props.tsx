@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import CC from './cc';
 import DD from './dd';
 import Imperative, { ImperativeRef } from './imperative';
+import FFF from './fff';
 
 const Props: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -64,9 +65,11 @@ const Props: React.FC = () => {
 
       <CC visible={ccVisible} onClick={onClick} onClose={onClose} text={p} />
 
-      <DD visible={ddVisible} onClose={onClose2} text={p} />
-
       <Imperative ref={IRef} />
+
+      <FFF>
+        <DD visible={ddVisible} onClose={onClose2} text={p} />
+      </FFF>
     </div>
   );
 };
