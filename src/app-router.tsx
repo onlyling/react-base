@@ -36,37 +36,50 @@ const AppRouter: React.FC = () => {
               <Route
                 exact
                 path="/login"
-                component={loadableWrapper(() => import('@/pages/login/login'))}
+                component={loadableWrapper(
+                  () => import(/* webpackChunkName: "login" */ '@/pages/login/login'),
+                )}
               />
 
               <Route
                 exact
                 path="/home"
-                component={loadableWrapper(() => import('@/pages/home/home'))}
+                component={loadableWrapper(
+                  () => import(/* webpackChunkName: "home" */ '@/pages/home/home'),
+                )}
               />
 
               <Route
                 exact
                 path="/demos/props"
-                component={loadableWrapper(() => import('@/pages/demo/props/props'))}
+                component={loadableWrapper(
+                  () => import(/* webpackChunkName: "demo-props" */ '@/pages/demo/props/props'),
+                )}
               />
 
               <Route
                 exact
                 path="/pro-table/demo"
-                component={loadableWrapper(() => import('@/pages/pro-table/demo'))}
+                component={loadableWrapper(
+                  () => import(/* webpackChunkName: "protable-demo" */ '@/pages/pro-table/demo'),
+                )}
               />
 
               <Route
                 exact
                 path="/pro-table/table"
-                component={loadableWrapper(() => import('@/pages/pro-table/table'))}
+                component={loadableWrapper(
+                  () => import(/* webpackChunkName: "protable-table" */ '@/pages/pro-table/table'),
+                )}
               />
 
               <Route
                 exact
                 path="/pro-table/table-2"
-                component={loadableWrapper(() => import('@/pages/pro-table/table-2'))}
+                component={loadableWrapper(
+                  () =>
+                    import(/* webpackChunkName: "protable-table2" */ '@/pages/pro-table/table-2'),
+                )}
               />
 
               <Route
@@ -78,13 +91,21 @@ const AppRouter: React.FC = () => {
                         <Route
                           exact
                           path="/user-manage/list"
-                          component={loadableWrapper(() => import('@/pages/user-manage/list/list'))}
+                          component={loadableWrapper(
+                            () =>
+                              import(
+                                /* webpackChunkName: "user-manage-list" */ '@/pages/user-manage/list/list'
+                              ),
+                          )}
                         />
                         <Route
                           exact
                           path="/user-manage/details/:id"
                           component={loadableWrapper(
-                            () => import('@/pages/user-manage/details/details'),
+                            () =>
+                              import(
+                                /* webpackChunkName: "user-manage-details" */ '@/pages/user-manage/details/details'
+                              ),
                           )}
                         />
                       </Switch>

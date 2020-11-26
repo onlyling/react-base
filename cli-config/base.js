@@ -7,7 +7,7 @@ const packageJSON = require('../package.json');
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const lessRegex = /\.less$/;
-const lessModuleRegex = /\.module\.less$/;
+// const lessModuleRegex = /\.module\.less$/;
 
 // TODO 可配置？
 const shouldUseSourceMap = false;
@@ -21,7 +21,7 @@ const getStyleLoaders = (cssOptions, preProcessor, preProcessorOptions = {}) => 
       loader: MiniCssExtractPlugin.loader,
       // css is located in `static/css`, use '../../' to locate index.html folder
       // in production `paths.publicUrlOrPath` can be a relative path
-      options: helpers.publicPath.publicUrlOrPath.startsWith('.') ? { publicPath: '../../' } : {},
+      options: helpers.publicPath.startsWith('.') ? { publicPath: '../../' } : {},
     },
     {
       loader: 'css-loader',
@@ -98,14 +98,14 @@ module.exports = {
       // Disable require.ensure as it's not a standard language feature.
       { parser: { requireEnsure: false } },
 
-      // 解决打包的时候找不到文件
-      // https://github.com/webpack/webpack/issues/11467
-      {
-        test: /\.m?js/,
-        resolve: {
-          fullySpecified: false,
-        },
-      },
+      // // 解决打包的时候找不到文件
+      // // https://github.com/webpack/webpack/issues/11467
+      // {
+      //   test: /\.m?js/,
+      //   resolve: {
+      //     fullySpecified: false,
+      //   },
+      // },
 
       // First, run the linter.
       // It's important to do this before Babel processes the JS.
@@ -151,7 +151,21 @@ module.exports = {
             include: helpers.resolveSrcPath(''),
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    // Allow importing core-js in entrypoint and use browserlist to select polyfills
+                    useBuiltIns: 'entry',
+                    // Set the corejs version we are using to avoid warnings in console
+                    corejs: 3,
+                    // Exclude transforms that make all code slower
+                    exclude: ['transform-typeof-symbol'],
+                  },
+                ],
+                '@babel/preset-react',
+                '@babel/preset-typescript',
+              ],
               plugins: [
                 '@babel/proposal-class-properties',
                 '@babel/proposal-object-rest-spread',
@@ -225,57 +239,9 @@ module.exports = {
           //   ],
           // },
 
-          // {
-          //   test: lessRegex,
-          //   resourceQuery: /css_modules/,
-          //   use: getStyleLoaders(
-          //     {
-          //       importLoaders: 3,
-          //       sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
-          //       modules: {
-          //         localIdentName: '[name]_[local]_[hash:base64:5]',
-          //       },
-          //     },
-          //     'less-loader',
-          //     helpers.lessOptions,
-          //   ),
-          // },
-
-          // {
-          //   test: lessRegex,
-          //   use: getStyleLoaders(
-          //     {
-          //       importLoaders: 3,
-          //       sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
-          //     },
-          //     'less-loader',
-          //     helpers.lessOptions,
-          //   ),
-          //   sideEffects: true,
-          // },
-
           {
             test: lessRegex,
-            exclude: lessModuleRegex,
-            use: getStyleLoaders(
-              {
-                importLoaders: 3,
-                sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
-              },
-              'less-loader',
-              helpers.lessOptions,
-            ),
-            // Don't consider CSS imports dead code even if the
-            // containing package claims to have no side effects.
-            // Remove this when webpack adds a warning or an error for this.
-            // See https://github.com/webpack/webpack/issues/6571
-            sideEffects: true,
-          },
-
-          // Adds support for CSS Modules, but using LESS
-          // using the extension .module.less
-          {
-            test: lessModuleRegex,
+            resourceQuery: new RegExp(helpers.CSS_MODULES_MARKER),
             use: getStyleLoaders(
               {
                 importLoaders: 3,
@@ -288,6 +254,54 @@ module.exports = {
               helpers.lessOptions,
             ),
           },
+
+          {
+            test: lessRegex,
+            use: getStyleLoaders(
+              {
+                importLoaders: 3,
+                sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+              },
+              'less-loader',
+              helpers.lessOptions,
+            ),
+            sideEffects: true,
+          },
+
+          // {
+          //   test: lessRegex,
+          //   exclude: lessModuleRegex,
+          //   use: getStyleLoaders(
+          //     {
+          //       importLoaders: 3,
+          //       sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //     },
+          //     'less-loader',
+          //     helpers.lessOptions,
+          //   ),
+          //   // Don't consider CSS imports dead code even if the
+          //   // containing package claims to have no side effects.
+          //   // Remove this when webpack adds a warning or an error for this.
+          //   // See https://github.com/webpack/webpack/issues/6571
+          //   sideEffects: true,
+          // },
+
+          // // Adds support for CSS Modules, but using LESS
+          // // using the extension .module.less
+          // {
+          //   test: lessModuleRegex,
+          //   use: getStyleLoaders(
+          //     {
+          //       importLoaders: 3,
+          //       sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //       modules: {
+          //         localIdentName: '[name]_[local]_[hash:base64:5]',
+          //       },
+          //     },
+          //     'less-loader',
+          //     helpers.lessOptions,
+          //   ),
+          // },
 
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.

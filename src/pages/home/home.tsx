@@ -5,7 +5,7 @@ import { useModel } from '@/models';
 
 import { Provider, CCCC } from './ctx/ctx';
 
-import Styles from './home.module.less';
+import Styles from './home.less';
 
 const Home: React.FC = () => {
   const { test, setTest } = useModel('test');

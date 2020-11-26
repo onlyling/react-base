@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useModel } from '@/models';
 
-import Styles from './login.module.less';
+import Styles from './login.less';
 
 const Login: React.FC = () => {
   const { test } = useModel('test');

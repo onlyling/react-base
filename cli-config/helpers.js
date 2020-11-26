@@ -4,6 +4,9 @@ const diyConfig = require('../react.config');
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = process.env.NODE_ENV === 'development';
 
+/** css modules 自动处理的标记 */
+const CSS_MODULES_MARKER = 'css_modules';
+
 /** 资源发布路径 output.publicPath */
 const publicPath = diyConfig.publicPath || (isProduction ? './' : '/');
 
@@ -24,6 +27,8 @@ const resolveSrcPath = (dir) => {
 };
 
 module.exports = {
+  CSS_MODULES_MARKER,
+  
   isProduction,
 
   isDevelopment,
