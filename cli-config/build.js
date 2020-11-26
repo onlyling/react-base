@@ -1,9 +1,12 @@
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const ora = require('ora');
 const helpers = require('./helpers');
 const base = require('./base');
+const terserOptions = require('./terser-options');
 
 const defaultConfig = merge(base, {
   mode: 'production',
@@ -13,7 +16,18 @@ const defaultConfig = merge(base, {
     chunkFilename: helpers.buildAssetsPath('js/[name].[chunkhash:8].js'),
   },
 
-  plugins: [new CleanWebpackPlugin()],
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin(terserOptions)],
+  },
+
+  plugins: [
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[contenthash:8].css',
+      chunkFilename: 'css/[name].[contenthash:8].css',
+    }),
+  ],
 });
 
 const devConfig = helpers.configureWebpack

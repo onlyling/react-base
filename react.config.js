@@ -1,5 +1,4 @@
 const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
 
 /** 是否是正式打包 */
 const isProduction = process.env.NODE_ENV === 'production';
@@ -67,28 +66,6 @@ module.exports = {
 
     // 打包时 npm 包转 CDN
     config.externals = externals;
-
-    if (isProduction) {
-      config.optimization = {
-        minimize: true,
-        minimizer: [
-          new TerserPlugin({
-            terserOptions: {
-              output: {
-                // Remove Comments
-                comments: false,
-              },
-              compress: {
-                // Pass true to discard calls to console.* functions.
-                drop_console: true,
-              },
-            },
-            // Remove Comments
-            extractComments: false,
-          }),
-        ],
-      };
-    }
 
     return config;
   },
