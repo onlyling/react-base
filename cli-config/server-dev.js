@@ -8,7 +8,7 @@ const port = 9090;
 webpackConfig.entry.app.unshift(
   'webpack/hot/dev-server',
   `webpack-dev-server/client?http://localhost:${port}`,
-  'react-hot-loader/patch',
+  //   'react-hot-loader/patch',
 );
 
 const devServerOptions = Object.assign(

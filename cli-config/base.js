@@ -156,8 +156,8 @@ module.exports = {
                 '@babel/proposal-class-properties',
                 '@babel/proposal-object-rest-spread',
                 '@babel/plugin-syntax-dynamic-import',
-                helpers.isProduction ? null : 'react-hot-loader/babel',
-              ].filter((p) => !!p),
+                helpers.isProduction ? null : 'react-refresh/babel',
+              ].filter(Boolean),
             },
           },
 
@@ -194,6 +194,65 @@ module.exports = {
               },
             }),
           },
+
+          // {
+          //   test: lessRegex,
+          //   oneOf: [
+          //     {
+          //       resourceQuery: /css_modules/,
+          //       use: getStyleLoaders(
+          //         {
+          //           importLoaders: 3,
+          //           sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //           modules: {
+          //             localIdentName: '[name]_[local]_[hash:base64:5]',
+          //           },
+          //         },
+          //         'less-loader',
+          //         helpers.lessOptions,
+          //       ),
+          //     },
+          //     {
+          //       use: getStyleLoaders(
+          //         {
+          //           importLoaders: 3,
+          //           sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //         },
+          //         'less-loader',
+          //         helpers.lessOptions,
+          //       ),
+          //     },
+          //   ],
+          // },
+
+          // {
+          //   test: lessRegex,
+          //   resourceQuery: /css_modules/,
+          //   use: getStyleLoaders(
+          //     {
+          //       importLoaders: 3,
+          //       sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //       modules: {
+          //         localIdentName: '[name]_[local]_[hash:base64:5]',
+          //       },
+          //     },
+          //     'less-loader',
+          //     helpers.lessOptions,
+          //   ),
+          // },
+
+          // {
+          //   test: lessRegex,
+          //   use: getStyleLoaders(
+          //     {
+          //       importLoaders: 3,
+          //       sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //     },
+          //     'less-loader',
+          //     helpers.lessOptions,
+          //   ),
+          //   sideEffects: true,
+          // },
 
           {
             test: lessRegex,
