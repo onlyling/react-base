@@ -1,6 +1,5 @@
 {
   "plugins": [
-    "./cli-config/libs/auto-css-modules.js",
     [
       "import",
       {

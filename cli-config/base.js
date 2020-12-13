@@ -1,6 +1,7 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const helpers = require('./helpers');
+const AutoCssModules = require('./libs/auto-css-modules');
 const packageJSON = require('../package.json');
 
 // style files regexes
@@ -153,6 +154,8 @@ module.exports = {
             options: {
               presets: [
                 [
+                  // babel preset env配置
+                  // https://segmentfault.com/a/1190000017929781
                   '@babel/preset-env',
                   {
                     // Allow importing core-js in entrypoint and use browserlist to select polyfills
@@ -161,6 +164,10 @@ module.exports = {
                     corejs: 3,
                     // Exclude transforms that make all code slower
                     exclude: ['transform-typeof-symbol'],
+
+                    // 指定将 es6 modules 转换为何种模块规范
+                    // 一般在 webpack 项目中，我们会将此参数设置为 false，既将 module 交由 webpack 处理，而不是 babel。
+                    modules: false,
                   },
                 ],
                 '@babel/preset-react',
@@ -170,6 +177,7 @@ module.exports = {
                 '@babel/proposal-class-properties',
                 '@babel/proposal-object-rest-spread',
                 '@babel/plugin-syntax-dynamic-import',
+                AutoCssModules,
                 helpers.isProduction ? null : 'react-refresh/babel',
               ].filter(Boolean),
             },
