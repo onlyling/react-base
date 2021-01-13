@@ -6,12 +6,15 @@ const packageJSON = require('../package.json');
 
 // style files regexes
 const cssRegex = /\.css$/;
-const cssModuleRegex = /\.module\.css$/;
+// const cssModuleRegex = /\.module\.css$/;
 const lessRegex = /\.less$/;
 // const lessModuleRegex = /\.module\.less$/;
 
 // TODO 可配置？
 const shouldUseSourceMap = false;
+
+// TODO 可配置？
+const localIdentName = '[name]_[local]_[hash:base64:5]';
 
 const imageInlineSizeLimit = parseInt(process.env.IMAGE_INLINE_SIZE_LIMIT || '10000');
 
@@ -183,38 +186,59 @@ module.exports = {
             },
           },
 
-          // "postcss" loader applies autoprefixer to our CSS.
-          // "css" loader resolves paths in CSS and adds assets as dependencies.
-          // "style" loader turns CSS into JS modules that inject <style> tags.
-          // In production, we use MiniCSSExtractPlugin to extract that CSS
-          // to a file, but in development "style" loader enables hot editing
-          // of CSS.
-          // By default we support CSS Modules with the extension .module.css
+          // // "postcss" loader applies autoprefixer to our CSS.
+          // // "css" loader resolves paths in CSS and adds assets as dependencies.
+          // // "style" loader turns CSS into JS modules that inject <style> tags.
+          // // In production, we use MiniCSSExtractPlugin to extract that CSS
+          // // to a file, but in development "style" loader enables hot editing
+          // // of CSS.
+          // // By default we support CSS Modules with the extension .module.css
+          // {
+          //   test: cssRegex,
+          //   exclude: cssModuleRegex,
+          //   use: getStyleLoaders({
+          //     importLoaders: 1,
+          //     sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //   }),
+          //   // Don't consider CSS imports dead code even if the
+          //   // containing package claims to have no side effects.
+          //   // Remove this when webpack adds a warning or an error for this.
+          //   // See https://github.com/webpack/webpack/issues/6571
+          //   sideEffects: true,
+          // },
+
+          // // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
+          // // using the extension .module.css
+          // {
+          //   test: cssModuleRegex,
+          //   use: getStyleLoaders({
+          //     importLoaders: 1,
+          //     sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //     modules: {
+          //       localIdentName: '[name]_[local]_[hash:base64:5]',
+          //     },
+          //   }),
+          // },
+
           {
             test: cssRegex,
-            exclude: cssModuleRegex,
-            use: getStyleLoaders({
-              importLoaders: 1,
-              sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
-            }),
-            // Don't consider CSS imports dead code even if the
-            // containing package claims to have no side effects.
-            // Remove this when webpack adds a warning or an error for this.
-            // See https://github.com/webpack/webpack/issues/6571
-            sideEffects: true,
-          },
-
-          // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
-          // using the extension .module.css
-          {
-            test: cssModuleRegex,
+            resourceQuery: new RegExp(helpers.CSS_MODULES_MARKER),
             use: getStyleLoaders({
               importLoaders: 1,
               sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
               modules: {
-                localIdentName: '[name]_[local]_[hash:base64:5]',
+                localIdentName,
               },
             }),
+          },
+
+          {
+            test: cssRegex,
+            use: getStyleLoaders({
+              importLoaders: 1,
+              sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+            }),
+            sideEffects: true,
           },
 
           // {
@@ -255,7 +279,7 @@ module.exports = {
                 importLoaders: 3,
                 sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
                 modules: {
-                  localIdentName: '[name]_[local]_[hash:base64:5]',
+                  localIdentName,
                 },
               },
               'less-loader',

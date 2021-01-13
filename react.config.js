@@ -56,6 +56,8 @@ module.exports = {
     modifyVars: {
       'primary-color': '#1DA57A',
     },
+    // less 4.x 计算的时候默认更改了，和 3.x 表现不一致
+    math: 'always',
   },
 
   configureWebpack: (config) => {

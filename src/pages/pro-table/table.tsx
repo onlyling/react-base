@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Table } from 'antd';
-import { ColumnProps, TablePaginationConfig } from 'antd/es/table';
+import { ColumnProps } from 'antd/es/table';
 import { Link } from 'react-router-dom';
 
 type DemoDataType = 1 | 2 | 3 | 4;
@@ -97,10 +97,10 @@ const ProTableDemo: React.FC = () => {
         columns={columns}
         loading={loading}
         dataSource={list}
-        onChange={(_: TablePaginationConfig, filters: Record<string, React.Key[] | null>) => {
+        onChange={(_, filters) => {
           setColumns((cs) =>
             cs.map((cc) => {
-              cc.filteredValue = filters[cc.dataIndex as string] || [];
+              cc.filteredValue = filters[cc.dataIndex as string] as any[] || [];
               return cc;
             }),
           );

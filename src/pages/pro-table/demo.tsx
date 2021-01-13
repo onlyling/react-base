@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from 'antd';
-import { TablePaginationConfig } from 'antd/es/table';
 import ProTable, { ProColumns } from '@ant-design/pro-table';
 import { Link } from 'react-router-dom';
 
@@ -96,10 +95,10 @@ const ProTableDemo: React.FC = () => {
         columns={columns}
         loading={loading}
         dataSource={list}
-        onChange={(_: TablePaginationConfig, filters: Record<string, React.Key[] | null>) => {
+        onChange={(_, filters) => {
           setColumns((cs) =>
             cs.map((cc) => {
-              cc.filteredValue = filters[cc.dataIndex as string] || [];
+              cc.filteredValue = filters[cc.dataIndex as string] as any[] || [];
               return cc;
             }),
           );
