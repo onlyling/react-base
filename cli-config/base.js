@@ -1,6 +1,6 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const helpers = require('./helpers');
+const helper = require('./helper');
 const AutoCssModules = require('./libs/auto-css-modules');
 const packageJSON = require('../package.json');
 
@@ -20,12 +20,12 @@ const imageInlineSizeLimit = parseInt(process.env.IMAGE_INLINE_SIZE_LIMIT || '10
 
 const getStyleLoaders = (cssOptions, preProcessor, preProcessorOptions = {}) => {
   const loaders = [
-    helpers.isDevelopment && 'style-loader',
-    helpers.isProduction && {
+    helper.isDevelopment && 'style-loader',
+    helper.isProduction && {
       loader: MiniCssExtractPlugin.loader,
       // css is located in `static/css`, use '../../' to locate index.html folder
       // in production `paths.publicUrlOrPath` can be a relative path
-      options: helpers.publicPath.startsWith('.') ? { publicPath: '../../' } : {},
+      options: helper.publicPath.startsWith('.') ? { publicPath: '../../' } : {},
     },
     {
       loader: 'css-loader',
@@ -55,7 +55,7 @@ const getStyleLoaders = (cssOptions, preProcessor, preProcessorOptions = {}) => 
             'postcss-normalize',
           ],
         },
-        sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+        sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
       },
     },
   ].filter(Boolean);
@@ -64,9 +64,9 @@ const getStyleLoaders = (cssOptions, preProcessor, preProcessorOptions = {}) => 
       {
         loader: 'resolve-url-loader',
         options: {
-          sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
           // root: paths.appSrc,
-          root: helpers.resolveSrcPath(''),
+          root: helper.resolveSrcPath(''),
         },
       },
       {
@@ -87,14 +87,14 @@ module.exports = {
   },
 
   entry: {
-    app: [helpers.resolveSrcPath('index.tsx')],
+    app: [helper.resolveSrcPath('index.tsx')],
   },
 
   output: {
-    path: helpers.outputDir,
-    publicPath: helpers.publicPath,
-    filename: helpers.buildAssetsPath('js/app.js'),
-    chunkFilename: helpers.buildAssetsPath('js/[name].chunk.js'),
+    path: helper.outputDir,
+    publicPath: helper.publicPath,
+    filename: helper.buildAssetsPath('js/app.js'),
+    chunkFilename: helper.buildAssetsPath('js/[name].chunk.js'),
   },
 
   module: {
@@ -122,7 +122,7 @@ module.exports = {
             options: {},
           },
         ],
-        include: helpers.resolveSrcPath(''),
+        include: helper.resolveSrcPath(''),
       },
 
       {
@@ -152,7 +152,7 @@ module.exports = {
           // The preset includes JSX, Flow, TypeScript, and some ESnext features.
           {
             test: /\.(js|mjs|jsx|ts|tsx)$/i,
-            include: helpers.resolveSrcPath(''),
+            include: helper.resolveSrcPath(''),
             loader: 'babel-loader',
             options: {
               presets: [
@@ -181,7 +181,7 @@ module.exports = {
                 '@babel/proposal-object-rest-spread',
                 '@babel/plugin-syntax-dynamic-import',
                 AutoCssModules,
-                helpers.isProduction ? null : 'react-refresh/babel',
+                helper.isProduction ? null : 'react-refresh/babel',
               ].filter(Boolean),
             },
           },
@@ -198,7 +198,7 @@ module.exports = {
           //   exclude: cssModuleRegex,
           //   use: getStyleLoaders({
           //     importLoaders: 1,
-          //     sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //     sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
           //   }),
           //   // Don't consider CSS imports dead code even if the
           //   // containing package claims to have no side effects.
@@ -213,7 +213,7 @@ module.exports = {
           //   test: cssModuleRegex,
           //   use: getStyleLoaders({
           //     importLoaders: 1,
-          //     sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //     sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
           //     modules: {
           //       localIdentName: '[name]_[local]_[hash:base64:5]',
           //     },
@@ -222,10 +222,10 @@ module.exports = {
 
           {
             test: cssRegex,
-            resourceQuery: new RegExp(helpers.CSS_MODULES_MARKER),
+            resourceQuery: new RegExp(helper.CSS_MODULES_MARKER),
             use: getStyleLoaders({
               importLoaders: 1,
-              sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+              sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
               modules: {
                 localIdentName,
               },
@@ -236,7 +236,7 @@ module.exports = {
             test: cssRegex,
             use: getStyleLoaders({
               importLoaders: 1,
-              sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+              sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
             }),
             sideEffects: true,
           },
@@ -249,23 +249,23 @@ module.exports = {
           //       use: getStyleLoaders(
           //         {
           //           importLoaders: 3,
-          //           sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //           sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
           //           modules: {
           //             localIdentName: '[name]_[local]_[hash:base64:5]',
           //           },
           //         },
           //         'less-loader',
-          //         helpers.lessOptions,
+          //         helper.lessOptions,
           //       ),
           //     },
           //     {
           //       use: getStyleLoaders(
           //         {
           //           importLoaders: 3,
-          //           sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //           sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
           //         },
           //         'less-loader',
-          //         helpers.lessOptions,
+          //         helper.lessOptions,
           //       ),
           //     },
           //   ],
@@ -273,17 +273,17 @@ module.exports = {
 
           {
             test: lessRegex,
-            resourceQuery: new RegExp(helpers.CSS_MODULES_MARKER),
+            resourceQuery: new RegExp(helper.CSS_MODULES_MARKER),
             use: getStyleLoaders(
               {
                 importLoaders: 3,
-                sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+                sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
                 modules: {
                   localIdentName,
                 },
               },
               'less-loader',
-              helpers.lessOptions,
+              helper.lessOptions,
             ),
           },
 
@@ -292,10 +292,10 @@ module.exports = {
             use: getStyleLoaders(
               {
                 importLoaders: 3,
-                sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+                sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
               },
               'less-loader',
-              helpers.lessOptions,
+              helper.lessOptions,
             ),
             sideEffects: true,
           },
@@ -306,10 +306,10 @@ module.exports = {
           //   use: getStyleLoaders(
           //     {
           //       importLoaders: 3,
-          //       sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //       sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
           //     },
           //     'less-loader',
-          //     helpers.lessOptions,
+          //     helper.lessOptions,
           //   ),
           //   // Don't consider CSS imports dead code even if the
           //   // containing package claims to have no side effects.
@@ -325,13 +325,13 @@ module.exports = {
           //   use: getStyleLoaders(
           //     {
           //       importLoaders: 3,
-          //       sourceMap: helpers.isProduction ? shouldUseSourceMap : helpers.isDevelopment,
+          //       sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
           //       modules: {
           //         localIdentName: '[name]_[local]_[hash:base64:5]',
           //       },
           //     },
           //     'less-loader',
-          //     helpers.lessOptions,
+          //     helper.lessOptions,
           //   ),
           // },
 
@@ -358,11 +358,11 @@ module.exports = {
 
   plugins: [
     new HtmlWebPackPlugin({
-      template: helpers.resolveSrcPath('index.html'),
+      template: helper.resolveSrcPath('index.html'),
       filename: 'index.html',
       title: packageJSON.name,
-      BASE_URL: helpers.publicPath,
-      minify: helpers.isProduction
+      BASE_URL: helper.publicPath,
+      minify: helper.isProduction
         ? {
             removeComments: true,
             collapseWhitespace: true,
@@ -377,7 +377,7 @@ module.exports = {
           }
         : {},
 
-      ...helpers.htmlWebpackPlugin,
+      ...helper.htmlWebpackPlugin,
     }),
   ],
 };

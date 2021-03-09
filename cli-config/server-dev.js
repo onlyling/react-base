@@ -1,7 +1,7 @@
 const WebpackDevServer = require('webpack-dev-server');
 const webpack = require('webpack');
 const webpackConfig = require('./dev');
-const helpers = require('./helpers');
+const helper = require('./helper');
 
 const port = 9090;
 
@@ -24,10 +24,10 @@ const devServerOptions = Object.assign(
     progress: true,
     // open: false,
     publicPath: webpackConfig.output.publicPath,
-    // contentBase: helpers.resolveRootPath('/public'),
+    // contentBase: helper.resolveRootPath('/public'),
     // index: 'index.html',
   },
-  helpers.devServer,
+  helper.devServer,
 );
 
 // WebpackDevServer.addDevServerEntrypoints(webpackConfig, devServerOptions);

@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const ora = require('ora');
-const helpers = require('./helpers');
+const helper = require('./helper');
 const base = require('./base');
 const terserOptions = require('./terser-options');
 
@@ -12,8 +12,8 @@ const defaultConfig = merge(base, {
   mode: 'production',
 
   output: {
-    filename: helpers.buildAssetsPath('js/[name].[chunkhash:8].js'),
-    chunkFilename: helpers.buildAssetsPath('js/[name].[chunkhash:8].js'),
+    filename: helper.buildAssetsPath('js/[name].[chunkhash:8].js'),
+    chunkFilename: helper.buildAssetsPath('js/[name].[chunkhash:8].js'),
   },
 
   optimization: {
@@ -30,8 +30,8 @@ const defaultConfig = merge(base, {
   ],
 });
 
-const devConfig = helpers.configureWebpack
-  ? helpers.configureWebpack(defaultConfig)
+const devConfig = helper.configureWebpack
+  ? helper.configureWebpack(defaultConfig)
   : defaultConfig;
 
 const spinner = ora('building for production...\n');

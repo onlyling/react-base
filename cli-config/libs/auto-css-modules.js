@@ -1,5 +1,5 @@
 const { extname } = require('path');
-const helpers = require('../helpers');
+const helpers = require('../helper');
 
 const CSS_FILE_EXTENSIONS = ['.css', '.scss', '.sass', '.less'];
 
