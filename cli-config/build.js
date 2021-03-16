@@ -3,6 +3,7 @@ const { merge } = require('webpack-merge');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ora = require('ora');
 const helper = require('./helper');
 const base = require('./base');
@@ -18,7 +19,7 @@ const defaultConfig = merge(base, {
 
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin(terserOptions)],
+    minimizer: [new TerserPlugin(terserOptions), new CssMinimizerPlugin()],
   },
 
   plugins: [
@@ -30,9 +31,7 @@ const defaultConfig = merge(base, {
   ],
 });
 
-const devConfig = helper.configureWebpack
-  ? helper.configureWebpack(defaultConfig)
-  : defaultConfig;
+const devConfig = helper.configureWebpack ? helper.configureWebpack(defaultConfig) : defaultConfig;
 
 const spinner = ora('building for production...\n');
 
