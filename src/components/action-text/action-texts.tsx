@@ -4,21 +4,19 @@ import { DownOutlined } from '@ant-design/icons';
 
 import ActionText, { ActionTextProps } from './action-text';
 
-export interface ActionTextsItem extends ActionTextProps {}
+export type ActionTextsItem = {} & ActionTextProps;
 
-export interface ActionTextsProps {
+export type ActionTextsProps = {
   btns: ActionTextsItem[];
 
   /** 最多显示多少个, 0 就不限制 默认 3 */
   count?: number;
-}
+};
 
 /**
  * 分页列表操作文字
  */
-const ActionTexts: React.FC<ActionTextsProps> & {
-  ActionText: typeof ActionText;
-} = ({ btns, count = 3 }) => {
+const ActionTexts: React.FC<ActionTextsProps> = ({ btns, count = 3 }) => {
   if (count === 1) {
     count = 2;
   }
@@ -43,7 +41,7 @@ const ActionTexts: React.FC<ActionTextsProps> & {
 
     return (
       <React.Fragment key={`${key}_fragment`}>
-        <ActionText {...resetProps} text={text} />
+        <ActionText {...resetProps} text={text} style={{ display: 'inline' }} />
 
         {index !== actionList.length - 1 ? (
           <Divider key={`${key}_divider`} type="vertical" />
@@ -96,7 +94,7 @@ const ActionTexts: React.FC<ActionTextsProps> & {
         <>
           <Divider type="vertical" />
           <Dropdown overlay={<Menu>{MenuJSX}</Menu>}>
-            <ActionText>
+            <ActionText style={{ display: 'inline' }}>
               更多
               <DownOutlined />
             </ActionText>
@@ -106,7 +104,5 @@ const ActionTexts: React.FC<ActionTextsProps> & {
     </>
   );
 };
-
-ActionTexts.ActionText = ActionText;
 
 export default ActionTexts;
