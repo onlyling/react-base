@@ -51,6 +51,14 @@ const AppRouter: React.FC = () => {
 
               <Route
                 exact
+                path="/flex"
+                component={loadableWrapper(
+                  () => import(/* webpackChunkName: "flex" */ '@/pages/flex/flex'),
+                )}
+              />
+
+              <Route
+                exact
                 path="/demos/props"
                 component={loadableWrapper(
                   () => import(/* webpackChunkName: "demo-props" */ '@/pages/demo/props/props'),

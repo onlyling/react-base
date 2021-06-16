@@ -1,0 +1,14 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .item {
+    @_size: 80px;
+    width: @_size;
+    height: @_size;
+    background-color: #f30;
+    flex-shrink: 0;
+    margin-bottom: 20px;
+  }
+}

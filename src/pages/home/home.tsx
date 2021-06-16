@@ -48,6 +48,10 @@ const Home: React.FC = () => {
         <Link to="/demos/props">GO DEMO PROPS</Link>
       </p>
 
+      <p>
+        <Link to="/flex">GO FLEX</Link>
+      </p>
+
       <Provider>
         <CCCC />
       </Provider>
