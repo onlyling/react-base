@@ -20,6 +20,9 @@ const defaultConfig = merge(base, {
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin(terserOptions), new CssMinimizerPlugin()],
+    // webpack5 长效缓存方案
+    moduleIds: 'deterministic',
+    chunkIds: 'deterministic',
   },
 
   plugins: [

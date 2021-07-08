@@ -7,6 +7,8 @@ const base = require('./base');
 const defaultConfig = merge(base, {
   mode: 'development',
 
+  target: 'web',
+
   plugins: [new webpack.HotModuleReplacementPlugin(), new ReactRefreshPlugin()],
 });
 

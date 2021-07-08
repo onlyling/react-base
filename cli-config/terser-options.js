@@ -36,5 +36,7 @@ module.exports = {
       ascii_only: true,
     },
   },
+  // 多进程打包
+  parallel: true,
   // sourceMap: false,
 };

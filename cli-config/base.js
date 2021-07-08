@@ -16,8 +16,6 @@ const shouldUseSourceMap = false;
 // TODO 可配置？
 const localIdentName = '[name]_[local]_[hash:base64:5]';
 
-const imageInlineSizeLimit = parseInt(process.env.IMAGE_INLINE_SIZE_LIMIT || '10000');
-
 const getStyleLoaders = (cssOptions, preProcessor, preProcessorOptions = {}) => {
   const loaders = [
     helper.isDevelopment && 'style-loader',
@@ -86,6 +84,7 @@ module.exports = {
     // 参考文档：https://juejin.cn/post/6924258563862822919
     // 将缓存类型设置为文件系统
     type: 'filesystem',
+    allowCollectingMemory: true,
     buildDependencies: {
       /* 将你的 config 添加为 buildDependency，以便在改变 config 时获得缓存无效*/
       config: [__filename],
@@ -94,6 +93,10 @@ module.exports = {
     },
     // 指定缓存的版本
     version: '1.0',
+  },
+
+  experiments: {
+    topLevelAwait: true,
   },
 
   resolve: {
@@ -141,27 +144,42 @@ module.exports = {
 
       {
         oneOf: [
-          // https://github.com/jshttp/mime-db
-          {
-            test: [/\.avif$/],
-            loader: 'url-loader',
-            options: {
-              limit: imageInlineSizeLimit,
-              mimetype: 'image/avif',
-              name: 'static/media/[name].[hash:8].[ext]',
-            },
-          },
+          // // https://github.com/jshttp/mime-db
+          // {
+          //   test: [/\.avif$/],
+          //   loader: 'url-loader',
+          //   options: {
+          //     limit: imageInlineSizeLimit,
+          //     mimetype: 'image/avif',
+          //     name: 'static/media/[name].[hash:8].[ext]',
+          //   },
+          // },
           // "url" loader works like "file" loader except that it embeds assets
           // smaller than specified limit in bytes as data URLs to avoid requests.
           // A missing `test` is equivalent to a match.
           {
             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-            loader: 'url-loader',
-            options: {
-              limit: imageInlineSizeLimit,
-              name: 'static/media/[name].[hash:8].[ext]',
+            type: 'asset',
+            generator: {
+              // [ext]前面自带"."
+              filename: 'static/media/[name].[hash:8][ext]',
+            },
+            parser: {
+              dataUrlCondition: {
+                maxSize: 10 * 1024, // 超过 10kb 不转 base64
+              },
             },
           },
+
+          {
+            test: /\.(eot|svg|ttf|woff|)$/,
+            type: 'asset/resource',
+            generator: {
+              // 输出文件位置以及文件名
+              filename: 'static/fonts/[name][ext]',
+            },
+          },
+
           // Process application JS with Babel.
           // The preset includes JSX, Flow, TypeScript, and some ESnext features.
           {
@@ -199,41 +217,6 @@ module.exports = {
               ].filter(Boolean),
             },
           },
-
-          // // "postcss" loader applies autoprefixer to our CSS.
-          // // "css" loader resolves paths in CSS and adds assets as dependencies.
-          // // "style" loader turns CSS into JS modules that inject <style> tags.
-          // // In production, we use MiniCSSExtractPlugin to extract that CSS
-          // // to a file, but in development "style" loader enables hot editing
-          // // of CSS.
-          // // By default we support CSS Modules with the extension .module.css
-          // {
-          //   test: cssRegex,
-          //   exclude: cssModuleRegex,
-          //   use: getStyleLoaders({
-          //     importLoaders: 1,
-          //     sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
-          //   }),
-          //   // Don't consider CSS imports dead code even if the
-          //   // containing package claims to have no side effects.
-          //   // Remove this when webpack adds a warning or an error for this.
-          //   // See https://github.com/webpack/webpack/issues/6571
-          //   sideEffects: true,
-          // },
-
-          // // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
-          // // using the extension .module.css
-          // {
-          //   test: cssModuleRegex,
-          //   use: getStyleLoaders({
-          //     importLoaders: 1,
-          //     sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
-          //     modules: {
-          //       localIdentName: '[name]_[local]_[hash:base64:5]',
-          //     },
-          //   }),
-          // },
-
           {
             test: cssRegex,
             resourceQuery: new RegExp(helper.CSS_MODULES_MARKER),
@@ -254,36 +237,6 @@ module.exports = {
             }),
             sideEffects: true,
           },
-
-          // {
-          //   test: lessRegex,
-          //   oneOf: [
-          //     {
-          //       resourceQuery: /css_modules/,
-          //       use: getStyleLoaders(
-          //         {
-          //           importLoaders: 3,
-          //           sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
-          //           modules: {
-          //             localIdentName: '[name]_[local]_[hash:base64:5]',
-          //           },
-          //         },
-          //         'less-loader',
-          //         helper.lessOptions,
-          //       ),
-          //     },
-          //     {
-          //       use: getStyleLoaders(
-          //         {
-          //           importLoaders: 3,
-          //           sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
-          //         },
-          //         'less-loader',
-          //         helper.lessOptions,
-          //       ),
-          //     },
-          //   ],
-          // },
 
           {
             test: lessRegex,
@@ -314,55 +267,16 @@ module.exports = {
             sideEffects: true,
           },
 
-          // {
-          //   test: lessRegex,
-          //   exclude: lessModuleRegex,
-          //   use: getStyleLoaders(
-          //     {
-          //       importLoaders: 3,
-          //       sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
-          //     },
-          //     'less-loader',
-          //     helper.lessOptions,
-          //   ),
-          //   // Don't consider CSS imports dead code even if the
-          //   // containing package claims to have no side effects.
-          //   // Remove this when webpack adds a warning or an error for this.
-          //   // See https://github.com/webpack/webpack/issues/6571
-          //   sideEffects: true,
-          // },
-
-          // // Adds support for CSS Modules, but using LESS
-          // // using the extension .module.less
-          // {
-          //   test: lessModuleRegex,
-          //   use: getStyleLoaders(
-          //     {
-          //       importLoaders: 3,
-          //       sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
-          //       modules: {
-          //         localIdentName: '[name]_[local]_[hash:base64:5]',
-          //       },
-          //     },
-          //     'less-loader',
-          //     helper.lessOptions,
-          //   ),
-          // },
-
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.
           // In production, they would get copied to the `build` folder.
           // This loader doesn't use a "test" so it will catch all modules
           // that fall through the other loaders.
           {
-            loader: 'file-loader',
-            // Exclude `js` files to keep "css" loader working as it injects
-            // its runtime that would otherwise be processed through "file" loader.
-            // Also exclude `html` and `json` extensions so they get processed
-            // by webpacks internal loaders.
+            type: 'asset/resource',
             exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
-            options: {
-              name: 'static/media/[name].[hash:8].[ext]',
+            generator: {
+              filename: 'static/media/[name].[hash:8][ext]',
             },
           },
         ],

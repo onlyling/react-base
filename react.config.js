@@ -16,18 +16,18 @@ const cdn = {
   dev: {
     css: [],
     js: [
-      'https://lib.baomitu.com/react/16.13.1/umd/react.development.js',
-      'https://lib.baomitu.com/react-dom/16.13.1/umd/react-dom.development.js',
-      'https://lib.baomitu.com/react-router-dom/5.1.2/react-router-dom.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.2.0/react-router-dom.js',
     ],
   },
   // 生产环境
   build: {
     css: [],
     js: [
-      'https://lib.baomitu.com/react/16.13.1/umd/react.production.min.js',
-      'https://lib.baomitu.com/react-dom/16.13.1/umd/react-dom.production.min.js',
-      'https://lib.baomitu.com/react-router-dom/5.1.2/react-router-dom.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.2.0/react-router-dom.min.js',
     ],
   },
 };
