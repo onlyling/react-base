@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
 import { Modal } from 'antd';
 
-import DDDDDD from './dd';
+import Dddd from './dd';
 
 interface CCProps {
   visible: boolean;
@@ -42,14 +42,14 @@ const CC: React.FC<CCProps> = ({ visible, onClick, onClose, text }) => {
       <p onClick={onClick}>323 - {ccc}</p>
 
       <p>
-        <span onClick={onClickC}>ccc -- ddddddd</span>
+        <span onClick={onClickC}>ccc -- ddddd</span>
       </p>
 
       <Modal visible={visible} onCancel={onClose} footer={null}>
         Modal
       </Modal>
 
-      <DDDDDD visible={ddVisible} onClose={onCloseC} text={text} />
+      <Dddd visible={ddVisible} onClose={onCloseC} text={text} />
     </div>
   );
 };

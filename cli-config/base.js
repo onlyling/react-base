@@ -1,5 +1,7 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const chalk = require('chalk');
 const helper = require('./helper');
 const AutoCssModules = require('./libs/auto-css-modules');
 const packageJSON = require('../package.json');
@@ -80,19 +82,20 @@ const getStyleLoaders = (cssOptions, preProcessor, preProcessorOptions = {}) => 
 };
 
 module.exports = {
+  target: ['browserslist'],
   cache: {
     // 参考文档：https://juejin.cn/post/6924258563862822919
     // 将缓存类型设置为文件系统
     type: 'filesystem',
-    allowCollectingMemory: true,
-    buildDependencies: {
-      /* 将你的 config 添加为 buildDependency，以便在改变 config 时获得缓存无效*/
-      config: [__filename],
-      /* 如果有其他的东西被构建依赖，你可以在这里添加它们*/
-      /* 注意，webpack.config，加载器和所有从你的配置中引用的模块都会被自动添加 */
-    },
-    // 指定缓存的版本
-    version: '1.0',
+    // allowCollectingMemory: true,
+    // buildDependencies: {
+    //   /* 将你的 config 添加为 buildDependency，以便在改变 config 时获得缓存无效*/
+    //   config: [__filename],
+    //   /* 如果有其他的东西被构建依赖，你可以在这里添加它们*/
+    //   /* 注意，webpack.config，加载器和所有从你的配置中引用的模块都会被自动添加 */
+    // },
+    // // 指定缓存的版本
+    // version: '1.0',
   },
 
   experiments: {
@@ -119,15 +122,6 @@ module.exports = {
       // Disable require.ensure as it's not a standard language feature.
       { parser: { requireEnsure: false } },
 
-      // // 解决打包的时候找不到文件
-      // // https://github.com/webpack/webpack/issues/11467
-      // {
-      //   test: /\.m?js/,
-      //   resolve: {
-      //     fullySpecified: false,
-      //   },
-      // },
-
       // First, run the linter.
       // It's important to do this before Babel processes the JS.
       {
@@ -144,16 +138,20 @@ module.exports = {
 
       {
         oneOf: [
-          // // https://github.com/jshttp/mime-db
-          // {
-          //   test: [/\.avif$/],
-          //   loader: 'url-loader',
-          //   options: {
-          //     limit: imageInlineSizeLimit,
-          //     mimetype: 'image/avif',
-          //     name: 'static/media/[name].[hash:8].[ext]',
-          //   },
-          // },
+          {
+            test: [/\.avif$/],
+            type: 'asset',
+            mimetype: 'image/avif',
+            generator: {
+              // [ext]前面自带"."
+              filename: 'static/media/[name].[hash:8][ext]',
+            },
+            parser: {
+              dataUrlCondition: {
+                maxSize: 10 * 1024, // 超过 10kb 不转 base64
+              },
+            },
+          },
           // "url" loader works like "file" loader except that it embeds assets
           // smaller than specified limit in bytes as data URLs to avoid requests.
           // A missing `test` is equivalent to a match.
@@ -185,37 +183,74 @@ module.exports = {
           {
             test: /\.(js|mjs|jsx|ts|tsx)$/i,
             include: helper.resolveSrcPath(''),
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                [
-                  // babel preset env配置
-                  // https://segmentfault.com/a/1190000017929781
-                  '@babel/preset-env',
-                  {
-                    // Allow importing core-js in entrypoint and use browserlist to select polyfills
-                    useBuiltIns: 'entry',
-                    // Set the corejs version we are using to avoid warnings in console
-                    corejs: 3,
-                    // Exclude transforms that make all code slower
-                    exclude: ['transform-typeof-symbol'],
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  presets: [
+                    [
+                      // babel preset env配置
+                      // https://segmentfault.com/a/1190000017929781
+                      '@babel/preset-env',
+                      {
+                        // Allow importing core-js in entrypoint and use browserlist to select polyfills
+                        useBuiltIns: 'entry',
+                        // Set the corejs version we are using to avoid warnings in console
+                        corejs: 3,
+                        // Exclude transforms that make all code slower
+                        exclude: ['transform-typeof-symbol'],
 
-                    // 指定将 es6 modules 转换为何种模块规范
-                    // 一般在 webpack 项目中，我们会将此参数设置为 false，既将 module 交由 webpack 处理，而不是 babel。
-                    modules: false,
-                  },
-                ],
-                '@babel/preset-react',
-                '@babel/preset-typescript',
-              ],
-              plugins: [
-                '@babel/proposal-class-properties',
-                '@babel/proposal-object-rest-spread',
-                '@babel/plugin-syntax-dynamic-import',
-                AutoCssModules,
-                helper.isProduction ? null : 'react-refresh/babel',
-              ].filter(Boolean),
-            },
+                        // 指定将 es6 modules 转换为何种模块规范
+                        // 一般在 webpack 项目中，我们会将此参数设置为 false，既将 module 交由 webpack 处理，而不是 babel。
+                        modules: false,
+                      },
+                    ],
+                    [
+                      '@babel/preset-react',
+                      {
+                        development: helper.isDevelopment,
+                      },
+                    ],
+                    '@babel/preset-typescript',
+                  ],
+                  plugins: [
+                    [
+                      '@babel/plugin-proposal-class-properties',
+                      {
+                        loose: true,
+                      },
+                    ],
+                    [
+                      '@babel/plugin-proposal-private-methods',
+                      {
+                        loose: true,
+                      },
+                    ],
+                    [
+                      '@babel/plugin-proposal-private-property-in-object',
+                      {
+                        loose: true,
+                      },
+                    ],
+                    '@babel/plugin-proposal-numeric-separator',
+                    '@babel/plugin-transform-runtime',
+                    '@babel/plugin-proposal-optional-chaining',
+                    '@babel/plugin-proposal-nullish-coalescing-operator',
+                    [
+                      '@babel/plugin-proposal-decorators',
+                      {
+                        legacy: true,
+                      },
+                    ],
+                    AutoCssModules,
+                    helper.isProduction ? null : 'react-refresh/babel',
+                  ].filter(Boolean),
+                  cacheDirectory: true,
+                  cacheCompression: false,
+                  compact: helper.isProduction,
+                },
+              },
+            ],
           },
           {
             test: cssRegex,
@@ -285,6 +320,9 @@ module.exports = {
   },
 
   plugins: [
+    new ProgressBarPlugin({
+      format: `  :msg [:bar] ${chalk.green.bold(':percent')} (:elapsed s)`,
+    }),
     new HtmlWebPackPlugin({
       template: helper.resolveSrcPath('index.html'),
       filename: 'index.html',

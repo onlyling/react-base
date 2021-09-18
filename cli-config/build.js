@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const PurgecssPlugin = require('purgecss-webpack-plugin');
 const ora = require('ora');
 const helper = require('./helper');
 const base = require('./base');
@@ -23,6 +24,7 @@ const defaultConfig = merge(base, {
     // webpack5 长效缓存方案
     moduleIds: 'deterministic',
     chunkIds: 'deterministic',
+    runtimeChunk: true,
   },
 
   plugins: [
@@ -30,6 +32,9 @@ const defaultConfig = merge(base, {
     new MiniCssExtractPlugin({
       filename: 'css/[name].[contenthash:8].css',
       chunkFilename: 'css/[name].[contenthash:8].css',
+    }),
+    new PurgecssPlugin({
+      paths: helper.resolveSrcPath(''),
     }),
   ],
 });

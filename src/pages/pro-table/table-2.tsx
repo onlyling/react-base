@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Table } from 'antd';
-import { ColumnProps } from 'antd/es/table';
+import type { ColumnProps } from 'antd/es/table';
 import { Link } from 'react-router-dom';
 import omit from 'omit.js';
 

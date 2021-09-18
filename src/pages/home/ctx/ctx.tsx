@@ -12,7 +12,7 @@ export const Provider: React.FC = ({ children }) => {
   return <NumberContext.Provider value={value}>{children}</NumberContext.Provider>;
 };
 
-export const CCCC: React.FC = () => {
+export const Ccc: React.FC = () => {
   const cc = useContext(NumberContext);
 
   return <p>{cc}</p>;

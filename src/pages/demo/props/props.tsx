@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
-import CC from './cc';
-import DD from './dd';
-import Imperative, { ImperativeRef } from './imperative';
-import FFF from './fff';
+import Cc from './cc';
+import Dd from './dd';
+import type { ImperativeRef } from './imperative';
+import Imperative from './imperative';
+import Fff from './fff';
 
 const Props: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -63,13 +64,13 @@ const Props: React.FC = () => {
         <span onClick={onClick2}>ddd</span>
       </p>
 
-      <CC visible={ccVisible} onClick={onClick} onClose={onClose} text={p} />
+      <Cc visible={ccVisible} onClick={onClick} onClose={onClose} text={p} />
 
       <Imperative ref={IRef} />
 
-      <FFF>
-        <DD visible={ddVisible} onClose={onClose2} text={p} />
-      </FFF>
+      <Fff>
+        <Dd visible={ddVisible} onClose={onClose2} text={p} />
+      </Fff>
     </div>
   );
 };

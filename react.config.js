@@ -16,9 +16,9 @@ const cdn = {
   dev: {
     css: [],
     js: [
-      'https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js',
-      'https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js',
-      'https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.2.0/react-router-dom.js',
+      // 'https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js',
+      // 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js',
+      // 'https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.2.0/react-router-dom.js',
     ],
   },
   // 生产环境
@@ -66,8 +66,10 @@ module.exports = {
       '@': resolveRootPath('src'),
     };
 
-    // 打包时 npm 包转 CDN
-    config.externals = externals;
+    if (isProduction) {
+      // 打包时 npm 包转 CDN
+      config.externals = externals;
+    }
 
     return config;
   },

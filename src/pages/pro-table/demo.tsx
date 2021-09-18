@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from 'antd';
-import ProTable, { ProColumns } from '@ant-design/pro-table';
+import type { ProColumns } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
 import { Link } from 'react-router-dom';
 
 type DemoDataType = 1 | 2 | 3 | 4;
@@ -98,7 +99,7 @@ const ProTableDemo: React.FC = () => {
         onChange={(_, filters) => {
           setColumns((cs) =>
             cs.map((cc) => {
-              cc.filteredValue = filters[cc.dataIndex as string] as any[] || [];
+              cc.filteredValue = (filters[cc.dataIndex as string] as any[]) || [];
               return cc;
             }),
           );

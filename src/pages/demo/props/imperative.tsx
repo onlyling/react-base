@@ -29,7 +29,7 @@ const Imperative = forwardRef<ImperativeRef, ImperativeProps>((_, ref) => {
   return (
     <>
       <p>Imperative</p>
-      
+
       <Modal visible={visible} footer={null} onCancel={onClose}>
         Modal
       </Modal>

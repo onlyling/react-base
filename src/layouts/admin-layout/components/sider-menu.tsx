@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 
 import { buildClassName } from '../helper';
-import { SiderMenuProps } from '../interface';
+import type { SiderMenuProps } from '../interface';
 import Container from '../container';
 
 const { SubMenu } = Menu;

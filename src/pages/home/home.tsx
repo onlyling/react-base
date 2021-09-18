@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { useModel } from '@/models';
 
-import { Provider, CCCC } from './ctx/ctx';
+import { Provider, Ccc } from './ctx/ctx';
 
 import Styles from './home.less';
 
@@ -53,7 +53,7 @@ const Home: React.FC = () => {
       </p>
 
       <Provider>
-        <CCCC />
+        <Ccc />
       </Provider>
     </div>
   );

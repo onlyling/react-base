@@ -6,7 +6,7 @@ import EmptyRoute from '@/router/components/empty-route';
 import RouteLoading from '@/router/components/loading';
 import ErrorBoundary from '@/router/components/error-boundary';
 
-import BaseLayout from '@/layouts/base-layout/base-layout.tsx';
+import BaseLayout from '@/layouts/base-layout/base-layout';
 import AdminLayout from '@/layouts/admin-layout/admin-layout';
 
 // import PageLogin from '@/pages/login/login';
@@ -18,6 +18,33 @@ const loadableWrapper = (fn: any) =>
   loadable(fn, {
     fallback: <RouteLoading />,
   });
+
+const UserManage = () => {
+  return (
+    <EmptyRoute>
+      <Switch>
+        <Route
+          exact
+          path="/user-manage/list"
+          component={loadableWrapper(
+            () =>
+              import(/* webpackChunkName: "user-manage-list" */ '@/pages/user-manage/list/list'),
+          )}
+        />
+        <Route
+          exact
+          path="/user-manage/details/:id"
+          component={loadableWrapper(
+            () =>
+              import(
+                /* webpackChunkName: "user-manage-details" */ '@/pages/user-manage/details/details'
+              ),
+          )}
+        />
+      </Switch>
+    </EmptyRoute>
+  );
+};
 
 const AppRouter: React.FC = () => {
   return (
@@ -90,37 +117,7 @@ const AppRouter: React.FC = () => {
                 )}
               />
 
-              <Route
-                path="/user-manage"
-                component={() => {
-                  return (
-                    <EmptyRoute>
-                      <Switch>
-                        <Route
-                          exact
-                          path="/user-manage/list"
-                          component={loadableWrapper(
-                            () =>
-                              import(
-                                /* webpackChunkName: "user-manage-list" */ '@/pages/user-manage/list/list'
-                              ),
-                          )}
-                        />
-                        <Route
-                          exact
-                          path="/user-manage/details/:id"
-                          component={loadableWrapper(
-                            () =>
-                              import(
-                                /* webpackChunkName: "user-manage-details" */ '@/pages/user-manage/details/details'
-                              ),
-                          )}
-                        />
-                      </Switch>
-                    </EmptyRoute>
-                  );
-                }}
-              />
+              <Route path="/user-manage" component={UserManage} />
             </Switch>
           </ErrorBoundary>
         </AdminLayout>

@@ -27,15 +27,17 @@ type Model<T extends keyof typeof models> = {
 
 /** 数据缓存 */
 class Dispatcher {
-  callbacks = {} as Record<ModelsKeyType, any>;
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  public callbacks = {} as Record<ModelsKeyType, any>;
 
   /**
    * 所有的 hook 的数据都缓存到这里
    * 共享数据
    */
-  data = {} as Record<ModelsKeyType, any>;
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  public data = {} as Record<ModelsKeyType, any>;
 
-  update = (namespace: ModelsKeyType) => {
+  public update = (namespace: ModelsKeyType) => {
     (this.callbacks[namespace] || []).forEach((callback: (val: any) => void) => {
       try {
         const data = this.data[namespace];
@@ -48,6 +50,7 @@ class Dispatcher {
 }
 
 /** Context */
+// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 const ModelContext = createContext({} as Dispatcher);
 
 /**

@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const helper = require('./helper');
@@ -9,11 +8,9 @@ const defaultConfig = merge(base, {
 
   target: 'web',
 
-  plugins: [new webpack.HotModuleReplacementPlugin(), new ReactRefreshPlugin()],
+  plugins: [new ReactRefreshPlugin()],
 });
 
-const devConfig = helper.configureWebpack
-  ? helper.configureWebpack(defaultConfig)
-  : defaultConfig;
+const devConfig = helper.configureWebpack ? helper.configureWebpack(defaultConfig) : defaultConfig;
 
 module.exports = devConfig;

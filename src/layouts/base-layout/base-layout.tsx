@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
-import moment from 'moment';
+import { locale } from 'moment';
 import 'moment/locale/zh-cn';
 
 import Styles from './base-layout.less';
 
-moment.locale('zh-cn');
+locale('zh-cn');
 
 const BaseLayout: React.FC = (props) => {
   const location = useLocation();

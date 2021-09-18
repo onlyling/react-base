@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createElement } from 'react';
 import { Layout } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 
 import Container from './container';
 import { buildClassName } from './helper';
-import { AdminLayoutProps } from './interface';
+import type { AdminLayoutProps } from './interface';
 import SiderMenu from './components/sider-menu';
 import './admin-layout.less';
 
@@ -60,7 +60,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
               isDark ? buildClassName('_header-dark') : buildClassName('_header-light'),
             )}
           >
-            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
               className: 'trigger',
               onClick: () => {
                 setCollapsed((cp) => !cp);

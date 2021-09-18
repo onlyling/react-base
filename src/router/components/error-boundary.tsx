@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 interface IState {
   hasError?: boolean;
@@ -13,16 +13,16 @@ export interface IProps {
   onError?: (error: Error, info: any) => void;
 }
 
-class ErrorBoundary extends React.Component<IProps, IState> {
-  static defaultProps = {
+class ErrorBoundary extends Component<IProps, IState> {
+  public static defaultProps = {
     onError: null,
   };
 
-  static getDerivedStateFromError() {
+  public static getDerivedStateFromError() {
     return { hasError: true };
   }
 
-  constructor(props: IProps) {
+  public constructor(props: IProps) {
     super(props);
     this.state = {
       hasError: false,
@@ -30,7 +30,7 @@ class ErrorBoundary extends React.Component<IProps, IState> {
     };
   }
 
-  componentDidCatch(error: any, info: any) {
+  public componentDidCatch(error: any, info: any) {
     this.setState({
       error,
       info,
@@ -41,7 +41,7 @@ class ErrorBoundary extends React.Component<IProps, IState> {
     }
   }
 
-  render() {
+  public render() {
     const { children, ...restProps } = this.props;
     const { hasError, error, info } = this.state;
     if (hasError) {
