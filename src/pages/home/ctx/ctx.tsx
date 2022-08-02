@@ -1,19 +1,24 @@
-import React, { createContext, useContext, useMemo } from 'react';
-import { useModel } from '@/models';
+import React, { createContext, useContext, useMemo } from 'react'
 
-const NumberContext = createContext<number>(0);
+import { useModel } from '@/models'
 
-export const Provider: React.FC = ({ children }) => {
-  const { test } = useModel('test');
+const NumberContext = createContext<number>(0)
+
+export const Provider: React.FC<React.PropsWithChildren<{}>> = ({
+  children,
+}) => {
+  const { test } = useModel('test')
   const value = useMemo(() => {
-    return test.a + 1000;
-  }, [test]);
+    return test.a + 1000
+  }, [test])
 
-  return <NumberContext.Provider value={value}>{children}</NumberContext.Provider>;
-};
+  return (
+    <NumberContext.Provider value={value}>{children}</NumberContext.Provider>
+  )
+}
 
 export const Ccc: React.FC = () => {
-  const cc = useContext(NumberContext);
+  const cc = useContext(NumberContext)
 
-  return <p>{cc}</p>;
-};
+  return <p>{cc}</p>
+}

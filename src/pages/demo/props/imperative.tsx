@@ -1,30 +1,36 @@
-import React, { useState, useCallback, useImperativeHandle, forwardRef, memo } from 'react';
-import { Modal } from 'antd';
+import { Modal } from 'antd'
+import {
+  useState,
+  useCallback,
+  useImperativeHandle,
+  forwardRef,
+  memo,
+} from 'react'
 
 export interface ImperativeRef {
-  show: () => void;
-  hide: () => void;
+  show: () => void
+  hide: () => void
 }
 
 interface ImperativeProps {}
 
 const Imperative = forwardRef<ImperativeRef, ImperativeProps>((_, ref) => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
 
   const onClose = useCallback(() => {
-    setVisible(false);
-  }, []);
+    setVisible(false)
+  }, [])
 
   const show = useCallback(() => {
-    setVisible(true);
-  }, []);
+    setVisible(true)
+  }, [])
 
   useImperativeHandle(ref, () => ({
     show,
     hide: onClose,
-  }));
+  }))
 
-  console.log('-- Imperative --');
+  console.log('-- Imperative --')
 
   return (
     <>
@@ -34,7 +40,7 @@ const Imperative = forwardRef<ImperativeRef, ImperativeProps>((_, ref) => {
         Modal
       </Modal>
     </>
-  );
-});
+  )
+})
 
-export default memo(Imperative);
+export default memo(Imperative)

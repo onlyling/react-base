@@ -1,14 +1,15 @@
-const path = require('path');
+/* eslint-disable @typescript-eslint/no-require-imports */
+const path = require('path')
 
 /** 是否是正式打包 */
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === 'production'
 
 /** import 全局变量 */
 const externals = {
   react: 'React',
   'react-dom': 'ReactDOM',
   'react-router-dom': 'ReactRouterDOM',
-};
+}
 
 /** cdn 资源文件 */
 const cdn = {
@@ -30,15 +31,15 @@ const cdn = {
       'https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.2.0/react-router-dom.min.js',
     ],
   },
-};
+}
 
 /**
  * 相对于项目根路径
  * @param {string} dir 文件路径
  */
-const resolveRootPath = (dir) => {
-  return path.join(__dirname, dir);
-};
+const resolveRootPath = dir => {
+  return path.join(__dirname, dir)
+}
 
 module.exports = {
   publicPath: isProduction ? './' : '/',
@@ -60,17 +61,17 @@ module.exports = {
     math: 'always',
   },
 
-  configureWebpack: (config) => {
+  configureWebpack: config => {
     // 别名
     config.resolve.alias = {
       '@': resolveRootPath('src'),
-    };
+    }
 
     if (isProduction) {
       // 打包时 npm 包转 CDN
-      config.externals = externals;
+      config.externals = externals
     }
 
-    return config;
+    return config
   },
-};
+}

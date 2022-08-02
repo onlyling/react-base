@@ -1,16 +1,16 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from 'antd';
-import { useModel } from '@/models';
+import { Button } from 'antd'
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-import { Provider, Ccc } from './ctx/ctx';
+import { useModel } from '@/models'
 
-import Styles from './home.less';
+import { Provider, Ccc } from './ctx/ctx'
+import Styles from './home.less'
 
 const Home: React.FC = () => {
-  const { test, setTest } = useModel('test');
+  const { test, setTest } = useModel('test')
 
-  console.log('rerender');
+  console.log('rerender')
 
   return (
     <div className={Styles.a}>
@@ -22,12 +22,11 @@ const Home: React.FC = () => {
         <Button
           type="primary"
           onClick={() => {
-            setTest((t) => ({
+            setTest(t => ({
               ...t,
               a: t.a + 1,
-            }));
-          }}
-        >
+            }))
+          }}>
           test ++
         </Button>
       </p>
@@ -56,7 +55,7 @@ const Home: React.FC = () => {
         <Ccc />
       </Provider>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

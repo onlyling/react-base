@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ora = require('ora')
-// const PurgecssPlugin = require('purgecss-webpack-plugin')
+const PurgecssPlugin = require('purgecss-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const webpack = require('webpack')
 const { merge } = require('webpack-merge')
@@ -15,7 +15,8 @@ const defaultConfig = merge(base, {
   mode: 'production',
 
   output: {
-    clean: true,
+    filename: helper.buildAssetsPath('js/[name].[chunkhash:8].js'),
+    chunkFilename: helper.buildAssetsPath('js/[name].[chunkhash:8].js'),
   },
 
   optimization: {
@@ -28,13 +29,14 @@ const defaultConfig = merge(base, {
   },
 
   plugins: [
+    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: 'static/css/[name].[contenthash:8].css',
-      chunkFilename: 'static/css/[name].[contenthash:8].css',
+      filename: 'css/[name].[contenthash:8].css',
+      chunkFilename: 'css/[name].[contenthash:8].css',
     }),
-    // new PurgecssPlugin({
-    //   paths: helper.resolveSrcPath(''),
-    // }),
+    new PurgecssPlugin({
+      paths: helper.resolveSrcPath(''),
+    }),
   ],
 })
 

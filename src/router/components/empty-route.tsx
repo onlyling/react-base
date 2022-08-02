@@ -1,6 +1,6 @@
-import React from 'react';
+import type React from 'react'
 
-// eslint-disable-next-line react/jsx-no-useless-fragment
-const EmptyRoute: React.FC = ({ children }) => <>{children}</>;
+const EmptyRoute: React.FC<React.PropsWithChildren<{}>> = ({ children }) =>
+  children as React.ReactElement
 
-export default EmptyRoute;
+export default EmptyRoute

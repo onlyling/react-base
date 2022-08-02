@@ -1,36 +1,34 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-const path = require('path')
+const path = require('path');
+const diyConfig = require('../react.config');
 
-const diyConfig = require('../react.config')
-
-const isProduction = process.env.NODE_ENV === 'production'
-const isDevelopment = process.env.NODE_ENV === 'development'
+const isProduction = process.env.NODE_ENV === 'production';
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 /** css modules 自动处理的标记 */
-const CSS_MODULES_MARKER = 'css_modules'
+const CSS_MODULES_MARKER = 'css_modules';
 
 /** 资源发布路径 output.publicPath */
-const publicPath = diyConfig.publicPath || (isProduction ? './' : '/')
+const publicPath = diyConfig.publicPath || (isProduction ? './' : '/');
 
 /**
  * 相对于项目根路径
  * @param {string} dir 文件路径
  */
-const resolveRootPath = dir => {
-  return path.join(__dirname, '../', dir)
-}
+const resolveRootPath = (dir) => {
+  return path.join(__dirname, '../', dir);
+};
 
 /**
  * 相对于 src 的路径
  * @param {string} dir 文件路径
  */
-const resolveSrcPath = dir => {
-  return resolveRootPath(`src/${dir}`)
-}
+const resolveSrcPath = (dir) => {
+  return resolveRootPath(`src/${dir}`);
+};
 
 module.exports = {
   CSS_MODULES_MARKER,
-
+  
   isProduction,
 
   isDevelopment,
@@ -39,8 +37,8 @@ module.exports = {
 
   outputDir: diyConfig.outputDir || 'dist',
 
-  buildAssetsPath: p => {
-    return path.join(diyConfig.assetsDir || '', p)
+  buildAssetsPath: (p) => {
+    return path.join(diyConfig.assetsDir || '', p);
   },
 
   filenameHashing: diyConfig.filenameHashing || true,
@@ -60,4 +58,4 @@ module.exports = {
   resolveRootPath,
 
   resolveSrcPath,
-}
+};

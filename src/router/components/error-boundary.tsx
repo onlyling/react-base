@@ -1,49 +1,49 @@
-import React, { Component } from 'react';
+import { Component } from 'react'
 
 interface IState {
-  hasError?: boolean;
-  error?: string;
+  hasError?: boolean
+  error?: string
   info?: {
-    componentStack?: string;
-  };
+    componentStack?: string
+  }
 }
 
-export interface IProps {
+export interface IProps extends React.PropsWithChildren<{}> {
   /** 发生错误后的回调（可做一些错误日志上报，打点等） */
-  onError?: (error: Error, info: any) => void;
+  onError?: (error: Error, info: any) => void
 }
 
 class ErrorBoundary extends Component<IProps, IState> {
   public static defaultProps = {
     onError: null,
-  };
+  }
 
   public static getDerivedStateFromError() {
-    return { hasError: true };
+    return { hasError: true }
   }
 
   public constructor(props: IProps) {
-    super(props);
+    super(props)
     this.state = {
       hasError: false,
       error: '',
-    };
+    }
   }
 
   public componentDidCatch(error: any, info: any) {
     this.setState({
       error,
       info,
-    });
-    const { onError } = this.props;
+    })
+    const { onError } = this.props
     if (onError && typeof onError === 'function') {
-      onError(error, info);
+      onError(error, info)
     }
   }
 
   public render() {
-    const { children, ...restProps } = this.props;
-    const { hasError, error, info } = this.state;
+    const { children, ...restProps } = this.props
+    const { hasError, error, info } = this.state
     if (hasError) {
       return (
         <div>
@@ -52,10 +52,10 @@ class ErrorBoundary extends Component<IProps, IState> {
           <p>{JSON.stringify(restProps)}</p>
           <p>{error}</p>
         </div>
-      );
+      )
     }
-    return children;
+    return children
   }
 }
 
-export default ErrorBoundary;
+export default ErrorBoundary
