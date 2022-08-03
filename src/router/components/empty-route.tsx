@@ -1,6 +1,10 @@
-import React from 'react';
+import type React from 'react'
+import { useOutlet } from 'react-router-dom'
 
-// eslint-disable-next-line react/jsx-no-useless-fragment
-const EmptyRoute: React.FC = ({ children }) => <>{children}</>;
+const EmptyRoute: React.FC = () => {
+  const outlet = useOutlet()
 
-export default EmptyRoute;
+  return outlet
+}
+
+export default EmptyRoute

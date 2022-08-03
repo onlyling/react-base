@@ -1,17 +1,17 @@
-import { createContainer } from 'unstated-next';
-import { useState } from 'react';
+import { useState } from 'react'
+import { createContainer } from 'unstated-next'
 
 const useCounter = () => {
-  const [openKeys, setOpenKeys] = useState<string[]>([]);
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [openKeys, setOpenKeys] = useState<string[]>([])
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([])
 
-  return { openKeys, setOpenKeys, selectedKeys, setSelectedKeys };
-};
+  return { openKeys, setOpenKeys, selectedKeys, setSelectedKeys }
+}
 
-const Counter = createContainer<ReturnType<typeof useCounter>, {}>(useCounter);
+const Counter = createContainer<ReturnType<typeof useCounter>, {}>(useCounter)
 
-export type CounterType = typeof useCounter;
+export type CounterType = typeof useCounter
 
-export { useCounter };
+export { useCounter }
 
-export default Counter;
+export default Counter

@@ -1,9 +1,11 @@
-const WebpackDevServer = require('webpack-dev-server');
-const webpack = require('webpack');
-const webpackConfig = require('./dev');
-const helper = require('./helper');
+/* eslint-disable @typescript-eslint/no-require-imports */
+const webpack = require('webpack')
+const WebpackDevServer = require('webpack-dev-server')
 
-const port = 9090;
+const webpackConfig = require('./dev')
+const helper = require('./helper')
+
+const port = 9090
 
 // webpackConfig.entry.app.unshift(
 //   'webpack/hot/dev-server',
@@ -11,7 +13,7 @@ const port = 9090;
 //   //   'react-hot-loader/patch',
 // );
 
-const compiler = webpack(webpackConfig);
+const compiler = webpack(webpackConfig)
 const devServerOptions = {
   port,
   host: '0.0.0.0', // '0.0.0.0' 可以通过局域网访问
@@ -30,13 +32,13 @@ const devServerOptions = {
   // contentBase: helper.resolveRootPath('/public'),
   // index: 'index.html',
   ...helper.devServer,
-};
+}
 
-const server = new WebpackDevServer(devServerOptions, compiler);
+const server = new WebpackDevServer(devServerOptions, compiler)
 
 server.startCallback(() => {
   console.log('发射 =>  =>  =>  =>')
-});
+})
 
 // const devServerOptions = Object.assign(
 //   {

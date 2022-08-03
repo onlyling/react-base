@@ -1,11 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useModel } from '@/models';
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-import Styles from './login.less';
+import { useModel } from '@/models'
+
+import Styles from './login.less'
 
 const Login: React.FC = () => {
-  const { test } = useModel('test');
+  const { test } = useModel('test')
 
   return (
     <div className={Styles.page}>
@@ -15,7 +16,7 @@ const Login: React.FC = () => {
 
       <Link to="/home">GO HOME</Link>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

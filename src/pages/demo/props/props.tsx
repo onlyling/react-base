@@ -1,49 +1,49 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 
-import Cc from './cc';
-import Dd from './dd';
-import type { ImperativeRef } from './imperative';
-import Imperative from './imperative';
-import Fff from './fff';
+import Cc from './cc'
+import Dd from './dd'
+import Fff from './fff'
+import type { ImperativeRef } from './imperative'
+import Imperative from './imperative'
 
 const Props: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [p, setP] = useState('1');
-  const [ccVisible, setCCVisible] = useState(false);
-  const [ddVisible, setDDVisible] = useState(false);
-  const IRef = useRef<ImperativeRef>(null);
+  const [loading, setLoading] = useState(true)
+  const [p, setP] = useState('1')
+  const [ccVisible, setCCVisible] = useState(false)
+  const [ddVisible, setDDVisible] = useState(false)
+  const IRef = useRef<ImperativeRef>(null)
 
-  console.log('-- Props --');
+  console.log('-- Props --')
 
   const onClick = useCallback(() => {
-    console.log('onClick');
-    setCCVisible(true);
-  }, []);
+    console.log('onClick')
+    setCCVisible(true)
+  }, [])
 
   const onClose = useCallback(() => {
-    console.log('onClose');
-    setCCVisible(false);
-  }, []);
+    console.log('onClose')
+    setCCVisible(false)
+  }, [])
 
   const onClick2 = useCallback(() => {
-    console.log('onClick2');
-    setDDVisible(true);
-  }, []);
+    console.log('onClick2')
+    setDDVisible(true)
+  }, [])
 
   const onClose2 = useCallback(() => {
-    console.log('onClose2');
-    setDDVisible(false);
-  }, []);
+    console.log('onClose2')
+    setDDVisible(false)
+  }, [])
 
   useEffect(() => {
     setTimeout(() => {
-      setP('2');
-      setLoading(false);
-    }, 1000);
-  }, []);
+      setP('2')
+      setLoading(false)
+    }, 1000)
+  }, [])
 
   if (loading) {
-    return <div>loading</div>;
+    return <div>loading</div>
   }
 
   return (
@@ -51,9 +51,8 @@ const Props: React.FC = () => {
       <p>
         <span
           onClick={() => {
-            IRef.current?.show();
-          }}
-        >
+            IRef.current?.show()
+          }}>
           show IRef
         </span>
       </p>
@@ -72,7 +71,7 @@ const Props: React.FC = () => {
         <Dd visible={ddVisible} onClose={onClose2} text={p} />
       </Fff>
     </div>
-  );
-};
+  )
+}
 
-export default Props;
+export default Props

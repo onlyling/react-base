@@ -1,31 +1,39 @@
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const chalk = require('chalk');
-const helper = require('./helper');
-const AutoCssModules = require('./libs/auto-css-modules');
-const packageJSON = require('../package.json');
+/* eslint-disable @typescript-eslint/no-require-imports */
+const ESLintPlugin = require('eslint-webpack-plugin')
+const HtmlWebPackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
+const packageJSON = require('../package.json')
+
+const helper = require('./helper')
+const AutoCssModules = require('./libs/auto-css-modules')
 
 // style files regexes
-const cssRegex = /\.css$/;
+const cssRegex = /\.css$/
 // const cssModuleRegex = /\.module\.css$/;
-const lessRegex = /\.less$/;
+const lessRegex = /\.less$/
 // const lessModuleRegex = /\.module\.less$/;
 
 // TODO 可配置？
-const shouldUseSourceMap = false;
+const shouldUseSourceMap = true
 
 // TODO 可配置？
-const localIdentName = '[name]_[local]_[hash:base64:5]';
+const localIdentName = '[name]_[local]_[hash:base64:5]'
 
-const getStyleLoaders = (cssOptions, preProcessor, preProcessorOptions = {}) => {
+const getStyleLoaders = (
+  cssOptions,
+  preProcessor,
+  preProcessorOptions = {},
+) => {
   const loaders = [
     helper.isDevelopment && 'style-loader',
     helper.isProduction && {
       loader: MiniCssExtractPlugin.loader,
       // css is located in `static/css`, use '../../' to locate index.html folder
       // in production `paths.publicUrlOrPath` can be a relative path
-      options: helper.publicPath.startsWith('.') ? { publicPath: '../../' } : {},
+      options: helper.publicPath.startsWith('.')
+        ? { publicPath: '../../' }
+        : {},
     },
     {
       loader: 'css-loader',
@@ -55,17 +63,20 @@ const getStyleLoaders = (cssOptions, preProcessor, preProcessorOptions = {}) => 
             'postcss-normalize',
           ],
         },
-        sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
+        sourceMap: helper.isProduction
+          ? shouldUseSourceMap
+          : helper.isDevelopment,
       },
     },
-  ].filter(Boolean);
+  ].filter(Boolean)
   if (preProcessor) {
     loaders.push(
       {
         loader: 'resolve-url-loader',
         options: {
-          sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
-          // root: paths.appSrc,
+          sourceMap: helper.isProduction
+            ? shouldUseSourceMap
+            : helper.isDevelopment,
           root: helper.resolveSrcPath(''),
         },
       },
@@ -76,13 +87,22 @@ const getStyleLoaders = (cssOptions, preProcessor, preProcessorOptions = {}) => 
           lessOptions: preProcessorOptions,
         },
       },
-    );
+    )
   }
-  return loaders;
-};
+  return loaders
+}
 
 module.exports = {
   target: ['browserslist'],
+
+  mode: helper.isProduction ? 'production' : 'development',
+
+  devtool: helper.isProduction
+    ? shouldUseSourceMap
+      ? 'source-map'
+      : false
+    : 'cheap-module-source-map',
+
   cache: {
     // 参考文档：https://juejin.cn/post/6924258563862822919
     // 将缓存类型设置为文件系统
@@ -113,8 +133,13 @@ module.exports = {
   output: {
     path: helper.outputDir,
     publicPath: helper.publicPath,
-    filename: helper.buildAssetsPath('js/app.js'),
-    chunkFilename: helper.buildAssetsPath('js/[name].chunk.js'),
+    filename: helper.isProduction
+      ? 'static/js/[name].[contenthash:8].js'
+      : 'static/js/bundle.js',
+    chunkFilename: helper.isProduction
+      ? 'static/js/[name].[contenthash:8].chunk.js'
+      : 'static/js/[name].chunk.js',
+    assetModuleFilename: 'static/media/[name].[hash][ext]',
   },
 
   module: {
@@ -122,30 +147,12 @@ module.exports = {
       // Disable require.ensure as it's not a standard language feature.
       { parser: { requireEnsure: false } },
 
-      // First, run the linter.
-      // It's important to do this before Babel processes the JS.
-      {
-        test: /\.(js|mjs|jsx|ts|tsx)$/,
-        enforce: 'pre',
-        use: [
-          {
-            loader: 'eslint-loader',
-            options: {},
-          },
-        ],
-        include: helper.resolveSrcPath(''),
-      },
-
       {
         oneOf: [
           {
             test: [/\.avif$/],
             type: 'asset',
             mimetype: 'image/avif',
-            generator: {
-              // [ext]前面自带"."
-              filename: 'static/media/[name].[hash:8][ext]',
-            },
             parser: {
               dataUrlCondition: {
                 maxSize: 10 * 1024, // 超过 10kb 不转 base64
@@ -158,10 +165,6 @@ module.exports = {
           {
             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
             type: 'asset',
-            generator: {
-              // [ext]前面自带"."
-              filename: 'static/media/[name].[hash:8][ext]',
-            },
             parser: {
               dataUrlCondition: {
                 maxSize: 10 * 1024, // 超过 10kb 不转 base64
@@ -172,10 +175,6 @@ module.exports = {
           {
             test: /\.(eot|svg|ttf|woff|)$/,
             type: 'asset/resource',
-            generator: {
-              // 输出文件位置以及文件名
-              filename: 'static/fonts/[name][ext]',
-            },
           },
 
           // Process application JS with Babel.
@@ -209,6 +208,8 @@ module.exports = {
                       '@babel/preset-react',
                       {
                         development: helper.isDevelopment,
+                        // tsconfig.json jsx
+                        runtime: 'automatic',
                       },
                     ],
                     '@babel/preset-typescript',
@@ -233,7 +234,14 @@ module.exports = {
                       },
                     ],
                     '@babel/plugin-proposal-numeric-separator',
-                    '@babel/plugin-transform-runtime',
+                    [
+                      '@babel/plugin-transform-runtime',
+                      {
+                        corejs: false,
+                        version: require('@babel/runtime/package.json').version,
+                        regenerator: true,
+                      },
+                    ],
                     '@babel/plugin-proposal-optional-chaining',
                     '@babel/plugin-proposal-nullish-coalescing-operator',
                     [
@@ -257,7 +265,9 @@ module.exports = {
             resourceQuery: new RegExp(helper.CSS_MODULES_MARKER),
             use: getStyleLoaders({
               importLoaders: 1,
-              sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
+              sourceMap: helper.isProduction
+                ? shouldUseSourceMap
+                : helper.isDevelopment,
               modules: {
                 localIdentName,
               },
@@ -268,7 +278,9 @@ module.exports = {
             test: cssRegex,
             use: getStyleLoaders({
               importLoaders: 1,
-              sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
+              sourceMap: helper.isProduction
+                ? shouldUseSourceMap
+                : helper.isDevelopment,
             }),
             sideEffects: true,
           },
@@ -279,7 +291,9 @@ module.exports = {
             use: getStyleLoaders(
               {
                 importLoaders: 3,
-                sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
+                sourceMap: helper.isProduction
+                  ? shouldUseSourceMap
+                  : helper.isDevelopment,
                 modules: {
                   localIdentName,
                 },
@@ -294,7 +308,9 @@ module.exports = {
             use: getStyleLoaders(
               {
                 importLoaders: 3,
-                sourceMap: helper.isProduction ? shouldUseSourceMap : helper.isDevelopment,
+                sourceMap: helper.isProduction
+                  ? shouldUseSourceMap
+                  : helper.isDevelopment,
               },
               'less-loader',
               helper.lessOptions,
@@ -310,9 +326,6 @@ module.exports = {
           {
             type: 'asset/resource',
             exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
-            generator: {
-              filename: 'static/media/[name].[hash:8][ext]',
-            },
           },
         ],
       },
@@ -320,9 +333,6 @@ module.exports = {
   },
 
   plugins: [
-    new ProgressBarPlugin({
-      format: `  :msg [:bar] ${chalk.green.bold(':percent')} (:elapsed s)`,
-    }),
     new HtmlWebPackPlugin({
       template: helper.resolveSrcPath('index.html'),
       filename: 'index.html',
@@ -345,5 +355,11 @@ module.exports = {
 
       ...helper.htmlWebpackPlugin,
     }),
-  ],
-};
+
+    !helper.isProduction
+      ? new ESLintPlugin({
+          extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
+        })
+      : null,
+  ].filter(Boolean),
+}

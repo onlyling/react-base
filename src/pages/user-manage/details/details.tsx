@@ -1,14 +1,16 @@
-import React from 'react';
-import type { RouteComponentProps } from 'react-router-dom';
+import React from 'react'
+import { useParams } from 'react-router-dom'
 
-const UserManageDetails: React.FC<RouteComponentProps<{ id: string }>> = ({ match }) => {
-  console.log(match.params.id);
+const UserManageDetails: React.FC = () => {
+  const params = useParams<{ id: string }>()
+
+  console.log(params.id)
 
   return (
     <div>
       <p>User Manage Details</p>
     </div>
-  );
-};
+  )
+}
 
-export default UserManageDetails;
+export default UserManageDetails

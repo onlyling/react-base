@@ -1,21 +1,21 @@
-const webpack = require('webpack');
-const { merge } = require('webpack-merge');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const PurgecssPlugin = require('purgecss-webpack-plugin');
-const ora = require('ora');
-const helper = require('./helper');
-const base = require('./base');
-const terserOptions = require('./terser-options');
+/* eslint-disable @typescript-eslint/no-require-imports */
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const ora = require('ora')
+// const PurgecssPlugin = require('purgecss-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+const webpack = require('webpack')
+const { merge } = require('webpack-merge')
+
+const base = require('./base')
+const helper = require('./helper')
+const terserOptions = require('./terser-options')
 
 const defaultConfig = merge(base, {
   mode: 'production',
 
   output: {
-    filename: helper.buildAssetsPath('js/[name].[chunkhash:8].js'),
-    chunkFilename: helper.buildAssetsPath('js/[name].[chunkhash:8].js'),
+    clean: true,
   },
 
   optimization: {
@@ -28,27 +28,28 @@ const defaultConfig = merge(base, {
   },
 
   plugins: [
-    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: 'css/[name].[contenthash:8].css',
-      chunkFilename: 'css/[name].[contenthash:8].css',
+      filename: 'static/css/[name].[contenthash:8].css',
+      chunkFilename: 'static/css/[name].[contenthash:8].css',
     }),
-    new PurgecssPlugin({
-      paths: helper.resolveSrcPath(''),
-    }),
+    // new PurgecssPlugin({
+    //   paths: helper.resolveSrcPath(''),
+    // }),
   ],
-});
+})
 
-const devConfig = helper.configureWebpack ? helper.configureWebpack(defaultConfig) : defaultConfig;
+const devConfig = helper.configureWebpack
+  ? helper.configureWebpack(defaultConfig)
+  : defaultConfig
 
-const spinner = ora('building for production...\n');
+const spinner = ora('building for production...\n')
 
-spinner.start();
+spinner.start()
 
 webpack(devConfig, (err, stats) => {
-  spinner.stop();
+  spinner.stop()
 
-  if (err) throw err;
+  if (err) throw err
 
   process.stdout.write(
     stats.toString({
@@ -58,5 +59,5 @@ webpack(devConfig, (err, stats) => {
       chunks: false,
       chunkModules: false,
     }) + '\n\n',
-  );
-});
+  )
+})

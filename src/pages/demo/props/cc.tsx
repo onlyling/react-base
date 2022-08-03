@@ -1,40 +1,40 @@
-import React, { useState, useEffect, memo } from 'react';
-import { Modal } from 'antd';
+import { Modal } from 'antd'
+import React, { useState, useEffect, memo } from 'react'
 
-import Dddd from './dd';
+import Dddd from './dd'
 
 interface CCProps {
-  visible: boolean;
-  text: string;
-  onClick: () => void;
-  onClose: () => void;
+  visible: boolean
+  text: string
+  onClick: () => void
+  onClose: () => void
 }
 
 const CC: React.FC<CCProps> = ({ visible, onClick, onClose, text }) => {
-  console.log('-- CC --');
-  const [ccc, setCCC] = useState('00000');
-  const [ddVisible, setDDVisible] = useState(false);
+  console.log('-- CC --')
+  const [ccc, setCCC] = useState('00000')
+  const [ddVisible, setDDVisible] = useState(false)
 
   const onClickC = () => {
-    console.log('onClickC');
-    setDDVisible(true);
-  };
+    console.log('onClickC')
+    setDDVisible(true)
+  }
 
   const onCloseC = () => {
-    console.log('onCloseC');
-    setDDVisible(false);
-  };
+    console.log('onCloseC')
+    setDDVisible(false)
+  }
 
   useEffect(() => {
     setTimeout(() => {
-      console.log('-- effect setCCC --');
-      setCCC('3333');
-    }, 2000);
+      console.log('-- effect setCCC --')
+      setCCC('3333')
+    }, 2000)
 
     return () => {
-      console.log('-- delete CC --');
-    };
-  }, []);
+      console.log('-- delete CC --')
+    }
+  }, [])
 
   return (
     <div>
@@ -51,7 +51,7 @@ const CC: React.FC<CCProps> = ({ visible, onClick, onClose, text }) => {
 
       <Dddd visible={ddVisible} onClose={onCloseC} text={text} />
     </div>
-  );
-};
+  )
+}
 
-export default memo(CC);
+export default memo(CC)

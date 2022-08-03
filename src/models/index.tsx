@@ -1,7 +1,13 @@
-import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
-import isEqual from 'fast-deep-equal';
+import isEqual from 'fast-deep-equal'
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from 'react'
 
-import model0 from './test';
+import model0 from './test'
 
 // 代码抄自 https://umijs.org/zh-CN/plugins/plugin-model
 // 脱离 umi 框架也能一样玩
@@ -15,167 +21,171 @@ import model0 from './test';
  */
 const models = {
   test: model0,
-};
+}
 
-type ModelsType = typeof models;
+type ModelsType = typeof models
 
-type ModelsKeyType = keyof ModelsType;
+type ModelsKeyType = keyof ModelsType
 
 type Model<T extends keyof typeof models> = {
-  [key in ModelsKeyType]: ReturnType<typeof models[T]>;
-};
+  [key in ModelsKeyType]: ReturnType<typeof models[T]>
+}
 
 /** 数据缓存 */
 class Dispatcher {
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  public callbacks = {} as Record<ModelsKeyType, any>;
+  public callbacks = {} as Record<ModelsKeyType, Set<any>>
 
   /**
    * 所有的 hook 的数据都缓存到这里
    * 共享数据
    */
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  public data = {} as Record<ModelsKeyType, any>;
+  public data = {} as Record<ModelsKeyType, any>
 
   public update = (namespace: ModelsKeyType) => {
-    (this.callbacks[namespace] || []).forEach((callback: (val: any) => void) => {
-      try {
-        const data = this.data[namespace];
-        callback(data);
-      } catch (e) {
-        callback(undefined);
-      }
-    });
-  };
+    ;(this.callbacks[namespace] || []).forEach(
+      (callback: (val: any) => void) => {
+        try {
+          const data = this.data[namespace]
+          callback(data)
+        } catch (e) {
+          callback(undefined)
+        }
+      },
+    )
+  }
 }
 
 /** Context */
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-const ModelContext = createContext({} as Dispatcher);
+const ModelContext = createContext({} as Dispatcher)
 
 /**
  * 当前所有的数据源
  */
-const dispatcher = new Dispatcher();
+const dispatcher = new Dispatcher()
 
 /**
  * 初始化所有 hook/model
  */
 const Executor: React.FC<{
-  namespace: ModelsKeyType;
-  hook: () => any;
-  onUpdate: (val: any) => void;
+  namespace: ModelsKeyType
+  hook: () => any
+  onUpdate: (val: any) => void
 }> = ({ hook, onUpdate, namespace }) => {
-  const UpdateRef = useRef(onUpdate);
-  const InitialLoad = useRef(false);
+  const UpdateRef = useRef(onUpdate)
+  const InitialLoad = useRef(false)
 
-  UpdateRef.current = onUpdate;
+  UpdateRef.current = onUpdate
 
-  let data: any;
+  let data: any
 
   try {
-    data = hook();
+    data = hook()
   } catch (error) {
-    console.log(`${namespace} model failed:`);
-    console.log(error);
+    console.log(`${namespace} model failed:`)
+    console.log(error)
   }
 
   useEffect(() => {
-    UpdateRef.current(data);
-    InitialLoad.current = false;
+    UpdateRef.current(data)
+    InitialLoad.current = false
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (InitialLoad.current) {
-      UpdateRef.current(data);
+      UpdateRef.current(data)
     } else {
-      InitialLoad.current = true;
+      InitialLoad.current = true
     }
-  });
+  })
 
-  return null;
-};
+  return null
+}
 
-export function useModel<T extends keyof Model<T>>(model: T): Model<T>[T];
+export function useModel<T extends keyof Model<T>>(model: T): Model<T>[T]
 // eslint-disable-next-line no-redeclare
 export function useModel<T extends keyof Model<T>, U>(
   model: T,
   selector: (model: Model<T>[T]) => U,
-): U;
+): U
 
 // eslint-disable-next-line no-redeclare
 export function useModel<T extends keyof Model<T>, U>(
   namespace: T,
   updater?: (model: Model<T>[T]) => U,
-): typeof updater extends undefined ? Model<T>[T] : ReturnType<NonNullable<typeof updater>> {
+): typeof updater extends undefined
+  ? Model<T>[T]
+  : ReturnType<NonNullable<typeof updater>> {
   type RetState = typeof updater extends undefined
     ? Model<T>[T]
-    : ReturnType<NonNullable<typeof updater>>;
+    : ReturnType<NonNullable<typeof updater>>
 
-  const dispatcher = useContext(ModelContext);
-  const updaterRef = useRef(updater);
+  const _dispatcher = useContext(ModelContext)
+  const updaterRef = useRef(updater)
   const [state, setState] = useState<RetState>(() =>
     updaterRef.current
-      ? updaterRef.current(dispatcher.data![namespace])
-      : dispatcher.data![namespace],
-  );
-  const stateRef = useRef<any>(state);
+      ? updaterRef.current(_dispatcher.data![namespace])
+      : _dispatcher.data![namespace],
+  )
+  const stateRef = useRef<any>(state)
 
-  updaterRef.current = updater;
-  stateRef.current = state;
+  updaterRef.current = updater
+  stateRef.current = state
 
   useEffect(() => {
     const handler = (e: any) => {
       if (updater && updaterRef.current) {
-        const currentState = updaterRef.current(e);
-        const previousState = stateRef.current;
+        const currentState = updaterRef.current(e)
+        const previousState = stateRef.current
         if (!isEqual(currentState, previousState)) {
-          setState(currentState);
+          setState(currentState)
         }
       } else {
-        setState(e);
+        setState(e)
       }
-    };
+    }
     try {
-      dispatcher.callbacks![namespace]!.add(handler);
+      _dispatcher.callbacks![namespace]!.add(handler)
     } catch (e) {
-      dispatcher.callbacks![namespace] = new Set();
-      dispatcher.callbacks![namespace]!.add(handler);
+      _dispatcher.callbacks![namespace] = new Set()
+      _dispatcher.callbacks![namespace]!.add(handler)
     }
     return () => {
-      dispatcher.callbacks![namespace]!.delete(handler);
-    };
-  }, [dispatcher.callbacks, namespace, updater]);
+      _dispatcher.callbacks![namespace]!.delete(handler)
+    }
+  }, [_dispatcher.callbacks, namespace, updater])
 
-  return state;
+  return state
 }
 
 /**
  * Model 的 Provider
  */
-const ModelProvider: React.FC = ({ children }) => {
+const ModelProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   return (
     <ModelContext.Provider value={dispatcher}>
-      {Object.keys(models).map((key) => {
-        const namespace = key as ModelsKeyType;
+      {Object.keys(models).map(key => {
+        const namespace = key as ModelsKeyType
 
         return (
           <Executor
             key={namespace}
             namespace={namespace}
             hook={models[namespace]}
-            onUpdate={(val) => {
-              dispatcher.data[namespace] = val;
-              dispatcher.update(namespace);
+            onUpdate={val => {
+              dispatcher.data[namespace] = val
+              dispatcher.update(namespace)
             }}
           />
-        );
+        )
       })}
 
       {children}
     </ModelContext.Provider>
-  );
-};
+  )
+}
 
-export default ModelProvider;
+export default ModelProvider

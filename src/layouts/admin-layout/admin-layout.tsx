@@ -1,34 +1,36 @@
-import React, { useState, useEffect, createElement } from 'react';
-import { Layout } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
-import classnames from 'classnames';
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
+import { Layout } from 'antd'
+import classnames from 'classnames'
+import React, { useState, useEffect, createElement } from 'react'
+import { useOutlet } from 'react-router-dom'
 
-import Container from './container';
-import { buildClassName } from './helper';
-import type { AdminLayoutProps } from './interface';
-import SiderMenu from './components/sider-menu';
-import './admin-layout.less';
+import SiderMenu from './components/sider-menu'
+import Container from './container'
+import { buildClassName } from './helper'
+import type { AdminLayoutProps } from './interface'
+import './admin-layout.less'
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({
-  children,
   theme = 'light',
   siderWidth = 280,
   logo,
   smallLogo,
 }) => {
-  console.log('-- admin-layout --');
+  console.log('-- admin-layout --')
   /** 深色 */
-  const isDark = theme === 'dark';
+  const isDark = theme === 'dark'
+
+  const outlet = useOutlet()
 
   // 侧边栏是否收起
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false)
 
   useEffect(() => {
     // 初始化的时候找到默认的菜单栏
-    console.log('|||');
-  }, []);
+    console.log('|||')
+  }, [])
 
   return (
     <Container.Provider>
@@ -36,13 +38,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
         <Sider
           collapsible
           className={classnames(
-            isDark ? buildClassName('_sider-dark') : buildClassName('_sider-light'),
+            isDark
+              ? buildClassName('_sider-dark')
+              : buildClassName('_sider-light'),
             buildClassName('_sider'),
           )}
           trigger={null}
           collapsed={collapsed}
-          width={siderWidth}
-        >
+          width={siderWidth}>
           {logo ? (
             <img
               alt=""
@@ -57,22 +60,23 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
         <Layout>
           <Header
             className={classnames(
-              isDark ? buildClassName('_header-dark') : buildClassName('_header-light'),
-            )}
-          >
+              isDark
+                ? buildClassName('_header-dark')
+                : buildClassName('_header-light'),
+            )}>
             {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
               className: 'trigger',
               onClick: () => {
-                setCollapsed((cp) => !cp);
+                setCollapsed(cp => !cp)
               },
             })}
           </Header>
 
-          <Content>{children}</Content>
+          <Content>{outlet}</Content>
         </Layout>
       </Layout>
     </Container.Provider>
-  );
-};
+  )
+}
 
-export default AdminLayout;
+export default AdminLayout

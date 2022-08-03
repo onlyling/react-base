@@ -39,4 +39,4 @@ module.exports = {
   // 多进程打包
   parallel: true,
   // sourceMap: false,
-};
+}

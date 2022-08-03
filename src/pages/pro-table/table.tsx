@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Button, Table } from 'antd';
-import type { ColumnProps } from 'antd/es/table';
-import { Link } from 'react-router-dom';
+import { Button, Table } from 'antd'
+import type { ColumnProps } from 'antd/es/table'
+import React, { useState, useEffect, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 
-type DemoDataType = 1 | 2 | 3 | 4;
+type DemoDataType = 1 | 2 | 3 | 4
 
 type DemoData = {
-  id: number;
-  title: string;
-  type: DemoDataType;
-};
+  id: number
+  title: string
+  type: DemoDataType
+}
 
-let index = 0;
+let index = 0
 
 const ProTableDemo: React.FC = () => {
   const [columns, setColumns] = useState<ColumnProps<DemoData>[]>([
@@ -28,34 +28,34 @@ const ProTableDemo: React.FC = () => {
         { text: '2', value: '2' },
       ],
     },
-  ]);
-  const [list, setList] = useState<DemoData[]>([]);
-  const [loading, setLoading] = useState(false);
+  ])
+  const [list, setList] = useState<DemoData[]>([])
+  const [loading, setLoading] = useState(false)
   const fetchData = useCallback(() => {
-    setLoading(true);
+    setLoading(true)
 
     setTimeout(() => {
-      const datas: DemoData[] = [];
+      const datas: DemoData[] = []
 
       for (let iii = 0; iii < 10; iii++) {
-        const id = ++index;
+        const id = ++index
 
         datas.push({
           id,
           title: `${id}_title`,
           type: 2,
-        });
+        })
       }
 
-      setList(datas);
+      setList(datas)
 
-      setLoading(false);
-    }, 500);
-  }, []);
+      setLoading(false)
+    }, 500)
+  }, [])
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchData()
+  }, [fetchData])
 
   return (
     <>
@@ -71,15 +71,14 @@ const ProTableDemo: React.FC = () => {
         <Button
           type="primary"
           onClick={() => {
-            setColumns((cs) =>
-              cs.map((cc) => ({
+            setColumns(cs =>
+              cs.map(cc => ({
                 ...cc,
                 filteredValue: [],
               })),
-            );
-            fetchData();
-          }}
-        >
+            )
+            fetchData()
+          }}>
           reset
         </Button>
       </p>
@@ -98,17 +97,18 @@ const ProTableDemo: React.FC = () => {
         loading={loading}
         dataSource={list}
         onChange={(_, filters) => {
-          setColumns((cs) =>
-            cs.map((cc) => {
-              cc.filteredValue = (filters[cc.dataIndex as string] as any[]) || [];
-              return cc;
+          setColumns(cs =>
+            cs.map(cc => {
+              cc.filteredValue =
+                (filters[cc.dataIndex as string] as any[]) || []
+              return cc
             }),
-          );
-          fetchData();
+          )
+          fetchData()
         }}
       />
     </>
-  );
-};
+  )
+}
 
-export default ProTableDemo;
+export default ProTableDemo

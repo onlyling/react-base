@@ -1,15 +1,20 @@
-import React from 'react';
-import AppRouter from './app-router';
-import Models from './models';
+import React from 'react'
+import { HashRouter } from 'react-router-dom'
+import 'antd/dist/antd.less'
 
-import './app.less';
+import Models from './models'
+import AppRouter from './router'
+
+import './app.less'
 
 const App: React.FC = () => {
   return (
-    <Models>
-      <AppRouter />
-    </Models>
-  );
-};
+    <HashRouter>
+      <Models>
+        <AppRouter />
+      </Models>
+    </HashRouter>
+  )
+}
 
-export default App;
+export default App
