@@ -9,6 +9,8 @@ const externals = {
   react: 'React',
   'react-dom': 'ReactDOM',
   'react-router-dom': 'ReactRouterDOM',
+  'react-router': 'ReactRouter',
+  history: 'HistoryLibrary',
 }
 
 /** cdn 资源文件 */
@@ -16,19 +18,17 @@ const cdn = {
   // 开发环境
   dev: {
     css: [],
-    js: [
-      // 'https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js',
-      // 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js',
-      // 'https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.2.0/react-router-dom.js',
-    ],
+    js: [],
   },
   // 生产环境
   build: {
     css: [],
     js: [
-      'https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js',
-      'https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js',
-      'https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.2.0/react-router-dom.min.js',
+      'https://lib.baomitu.com/react/18.2.0/umd/react.production.min.js',
+      'https://lib.baomitu.com/react-dom/18.2.0/umd/react-dom.production.min.js',
+      'https://lib.baomitu.com/history/5.2.0/history.production.min.js',
+      'https://lib.baomitu.com/react-router/6.3.0/react-router.production.min.js',
+      'https://lib.baomitu.com/react-router-dom/6.3.0/react-router-dom.production.min.js',
     ],
   },
 }
