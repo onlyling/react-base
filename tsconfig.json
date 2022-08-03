@@ -14,7 +14,9 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*", "typings.d.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"]

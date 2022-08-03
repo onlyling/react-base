@@ -1,15 +1,18 @@
 import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 
-import AppRouter from './app-router'
 import Models from './models'
+import AppRouter from './router'
 
 import './app.less'
 
 const App: React.FC = () => {
   return (
-    <Models>
-      <AppRouter />
-    </Models>
+    <BrowserRouter>
+      <Models>
+        <AppRouter />
+      </Models>
+    </BrowserRouter>
   )
 }
 

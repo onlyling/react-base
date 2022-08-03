@@ -19,6 +19,6 @@ module.exports = {
     // 自定义你的规则
     '@typescript-eslint/consistent-type-definitions': 0,
     'max-nested-callbacks': 'off',
-    'no-console': [1, { allow: ['warn', 'error'] }],
+    'no-console': [0, { allow: ['warn', 'error'] }],
   },
 }

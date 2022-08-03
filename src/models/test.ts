@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
 type TestStateType = {
-  a: number;
-};
+  a: number
+}
 
 const useTest = () => {
-  const [test, setTest] = useState<TestStateType>({ a: 1 });
+  const [test, setTest] = useState<TestStateType>({ a: 1 })
 
-  return { test, setTest };
-};
+  return { test, setTest }
+}
 
-export default useTest;
+export default useTest

@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Modal } from 'antd';
+import { Modal } from 'antd'
+import React, { useState, useEffect } from 'react'
 
 interface DDProps {
-  visible: boolean;
-  text: string;
-  onClose: () => void;
+  visible: boolean
+  text: string
+  onClose: () => void
 }
 
 const DD: React.FC<DDProps> = ({ visible, onClose, text }) => {
-  console.log('-- DD --');
-  const [DDD, setDDD] = useState('00000');
+  console.log('-- DD --')
+  const [DDD, setDDD] = useState('00000')
 
   useEffect(() => {
     setTimeout(() => {
-      setDDD(text);
-    }, 2000);
-  }, [text]);
+      setDDD(text)
+    }, 2000)
+  }, [text])
 
   return (
     <div>
@@ -25,7 +25,7 @@ const DD: React.FC<DDProps> = ({ visible, onClose, text }) => {
         {DDD}
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default DD;
+export default DD

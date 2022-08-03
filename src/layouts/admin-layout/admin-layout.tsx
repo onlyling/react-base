@@ -2,6 +2,7 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 import { Layout } from 'antd'
 import classnames from 'classnames'
 import React, { useState, useEffect, createElement } from 'react'
+import { useOutlet } from 'react-router-dom'
 
 import SiderMenu from './components/sider-menu'
 import Container from './container'
@@ -11,8 +12,7 @@ import './admin-layout.less'
 
 const { Header, Sider, Content } = Layout
 
-const AdminLayout: React.FC<React.PropsWithChildren<AdminLayoutProps>> = ({
-  children,
+const AdminLayout: React.FC<AdminLayoutProps> = ({
   theme = 'light',
   siderWidth = 280,
   logo,
@@ -21,6 +21,8 @@ const AdminLayout: React.FC<React.PropsWithChildren<AdminLayoutProps>> = ({
   console.log('-- admin-layout --')
   /** 深色 */
   const isDark = theme === 'dark'
+
+  const outlet = useOutlet()
 
   // 侧边栏是否收起
   const [collapsed, setCollapsed] = useState(false)
@@ -70,7 +72,7 @@ const AdminLayout: React.FC<React.PropsWithChildren<AdminLayoutProps>> = ({
             })}
           </Header>
 
-          <Content>{children}</Content>
+          <Content>{outlet}</Content>
         </Layout>
       </Layout>
     </Container.Provider>

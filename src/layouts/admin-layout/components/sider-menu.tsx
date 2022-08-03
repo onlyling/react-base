@@ -1,16 +1,35 @@
-import React from 'react';
-import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  LaptopOutlined,
+  NotificationOutlined,
+} from '@ant-design/icons'
+import { Menu } from 'antd'
+import React from 'react'
 
-import { buildClassName } from '../helper';
-import type { SiderMenuProps } from '../interface';
-import Container from '../container';
+import Container from '../container'
+import { buildClassName } from '../helper'
+import type { SiderMenuProps } from '../interface'
 
-const { SubMenu } = Menu;
+const menuItems = [
+  {
+    icon: <UserOutlined />,
+    key: '/home',
+    label: 'home',
+  },
+  {
+    icon: <LaptopOutlined />,
+    key: '/login',
+    label: 'login',
+  },
+  {
+    icon: <NotificationOutlined />,
+    key: '/user-manage',
+    label: 'user-manage',
+  },
+]
 
 const SiderMenu: React.FC<SiderMenuProps> = ({ theme }) => {
-  const { selectedKeys, openKeys, setOpenKeys } = Container.useContainer();
+  const { selectedKeys, openKeys, setOpenKeys } = Container.useContainer()
 
   return (
     <Menu
@@ -20,12 +39,12 @@ const SiderMenu: React.FC<SiderMenuProps> = ({ theme }) => {
       theme={theme}
       selectedKeys={selectedKeys}
       openKeys={openKeys}
-      onOpenChange={(oks) => {
-        console.log(oks);
-        setOpenKeys(oks as string[]);
-      }}
-    >
-      <Menu.Item key="/home">
+      items={menuItems}
+      onOpenChange={oks => {
+        console.log(oks)
+        setOpenKeys(oks as string[])
+      }}>
+      {/* <Menu.Item key="/home">
         <Link to="/home">nav 1</Link>
       </Menu.Item>
       <Menu.Item key="/login">
@@ -51,9 +70,9 @@ const SiderMenu: React.FC<SiderMenuProps> = ({ theme }) => {
         <Menu.Item key="10">option10</Menu.Item>
         <Menu.Item key="11">option11</Menu.Item>
         <Menu.Item key="12">option12</Menu.Item>
-      </SubMenu>
+      </SubMenu> */}
     </Menu>
-  );
-};
+  )
+}
 
-export default SiderMenu;
+export default SiderMenu
