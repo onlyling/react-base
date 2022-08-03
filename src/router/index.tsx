@@ -8,38 +8,6 @@ import BaseLayout from '@/layouts/base-layout/base-layout'
 import EmptyRoute from './components/empty-route'
 import { buildRouteSuspense } from './suspense'
 
-// import PageLogin from '@/pages/login/login';
-// import PageHome from '@/pages/home/home';
-// import PageUserManageList from '@/pages/user-manage/list/list';
-// import PageUserManageDetails from '@/pages/user-manage/details/details';
-
-// const UserManage = () => {
-//   return (
-//     <EmptyRoute>
-//       <Switch>
-//         <Route
-//           path="/user-manage/list"
-//           component={loadableWrapper(
-//             () =>
-//               import(
-//                 /* webpackChunkName: "user-manage-list" */ '@/pages/user-manage/list/list'
-//               ),
-//           )}
-//         />
-//         <Route
-//           path="/user-manage/details/:id"
-//           component={loadableWrapper(
-//             () =>
-//               import(
-//                 /* webpackChunkName: "user-manage-details" */ '@/pages/user-manage/details/details'
-//               ),
-//           )}
-//         />
-//       </Switch>
-//     </EmptyRoute>
-//   )
-// }
-
 const AppRouter: React.FC = () => {
   return (
     <BaseLayout>
