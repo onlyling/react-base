@@ -50,6 +50,7 @@ module.exports = {
 
   htmlWebpackPlugin: {
     cdn: isProduction ? cdn.build : cdn.dev,
+    scriptLoading: 'blocking',
   },
 
   lessOptions: {
