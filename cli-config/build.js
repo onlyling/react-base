@@ -31,6 +31,7 @@ const defaultConfig = merge(base, {
     new MiniCssExtractPlugin({
       filename: 'static/css/[name].[contenthash:8].css',
       chunkFilename: 'static/css/[name].[contenthash:8].css',
+      ignoreOrder: true,
     }),
     // new PurgecssPlugin({
     //   paths: helper.resolveSrcPath(''),
