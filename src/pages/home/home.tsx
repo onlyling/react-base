@@ -44,6 +44,10 @@ const Home: React.FC = () => {
       </p>
 
       <p>
+        <Link to="/pro-table/demo2">GO PRO TABLE DEMO2</Link>
+      </p>
+
+      <p>
         <Link to="/demos/props">GO DEMO PROPS</Link>
       </p>
 

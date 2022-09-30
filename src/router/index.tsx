@@ -80,6 +80,17 @@ const AppRouter: React.FC = () => {
                 ),
               },
               {
+                path: '/pro-table/demo2',
+                element: buildRouteSuspense(
+                  lazy(
+                    () =>
+                      import(
+                        /* webpackChunkName: "protable-demo2" */ '@/pages/pro-table/demo2'
+                      ),
+                  ),
+                ),
+              },
+              {
                 path: '/pro-table/table',
                 element: buildRouteSuspense(
                   lazy(
