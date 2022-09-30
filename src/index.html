@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans">
+<html lang="zh">
   <head>
     <meta charset="utf-8" />
     <meta name="renderer" content="webkit" />
@@ -7,17 +7,19 @@
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
-    />
-    <link rel="icon" href="<%= htmlWebpackPlugin.options.BASE_URL %>favicon.ico" />
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <link
+      rel="icon"
+      href="<%= htmlWebpackPlugin.options.BASE_URL %>favicon.ico" />
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
 
   <body>
     <noscript>
       <strong
-        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without
-        JavaScript enabled. Please enable it to continue.</strong
+        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
+        properly without JavaScript enabled. Please enable it to
+        continue.</strong
       >
     </noscript>
 
@@ -28,7 +30,8 @@
       </div>
     </div>
 
-    <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
+    <% for (var i in htmlWebpackPlugin.options.cdn &&
+    htmlWebpackPlugin.options.cdn.js) { %>
     <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
     <% } %>
 
